@@ -3,5 +3,14 @@
     "description": "A simple and great vanilla php framework",
     "type": "framework",
     "license": "MIT",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "controllers/",
+            "Models\\": "models/",
+            "Views\\": "views/",
+            "Layers\\": "layers/",
+            "Xarvis\\": "xarvis/"
+        }
+    }
 }
