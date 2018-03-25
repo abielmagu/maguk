@@ -1,0 +1,7 @@
+{
+    "name": "abielmagu/maguk",
+    "description": "A simple and great vanilla php framework",
+    "type": "framework",
+    "license": "MIT",
+    "require": {}
+}
