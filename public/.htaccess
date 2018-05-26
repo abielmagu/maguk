@@ -1,9 +1,14 @@
 <IfModule mod_rewrite.c>    
-    Options +FollowSymLinks
     RewriteEngine On
 
-    RewriteCond %{REQUEST_URI} !-f
-    RewriteCond %{REQUEST_URI} !-d
-    RewriteCond %{REQUEST_URI} !-l
-    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+    Options -Indexes
+    Options +FollowSymLinks
+
+    #RewriteBase /mvc/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+    #RewriteRule ^index\.php/([a-zA-Z0-9_-]+)/method/param$ /index.php?url=$1 [QSA,L]
+
 </IfModule>

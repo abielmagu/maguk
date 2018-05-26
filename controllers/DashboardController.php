@@ -4,6 +4,6 @@ class DashboardController {
     
     public function index()
     {
-        return 'Im dashboard index';
+        echo 'Im dashboard index';
     }
 }

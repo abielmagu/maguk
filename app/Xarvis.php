@@ -1,6 +1,6 @@
-<?php namespace Xarvis;
+<?php namespace App;
 
-class Service {
+class Xarvis {
     private $route;
 
     public function __construct($route)
@@ -13,7 +13,9 @@ class Service {
     {
         $instance = $this->instanceControllerClass( $this->route->getController() );
         if( !$instance )
-            die( 'No existe controlador' );
+        {
+            die(': Controller not exists;');
+        }
         
         $method = $this->existsInstanceMethod($instace, $this->route->getMethod() );
         if( !$method )

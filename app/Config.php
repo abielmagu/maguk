@@ -1,4 +1,4 @@
-<?php namespace Xarvis;
+<?php namespace App;
 
 class Config {
 

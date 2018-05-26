@@ -10,7 +10,7 @@
             "Models\\": "models/",
             "Views\\": "views/",
             "Layers\\": "layers/",
-            "Xarvis\\": "xarvis/"
+            "App\\": "app/"
         }
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Xarvis;
+<?php namespace App;
 
 class Environment {
 
@@ -18,6 +18,6 @@ class Environment {
 
     static public function app($env)
     {
-        date_default_timezone_set($env['timezone']);
+        date_default_timezone_set( $env['timezone'] );
     }
 }

@@ -1,15 +1,15 @@
-<?php namespace Xarvis;
+<?php namespace App;
 
 class Route {
 
-    private $url = '';
+    private $url;
     private $controller;
     private $method;
     private $args;
 
-    public function __construct(Request $request)
+    public function __construct( $queryUrl )
     {
-        $url = explode('/', $request->url());
+        $url = explode('/', $queryUrl);
         $this->setController($url);
         $this->setMethod($url);
         $this->setArgs($url);
@@ -47,9 +47,7 @@ class Route {
 
     private function shift(&$array)
     {
-        if( $array )
-            return array_shift($array);
-
+        if( $array ) return array_shift($array);
         return null;
     }
 }
