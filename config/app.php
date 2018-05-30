@@ -2,5 +2,6 @@
 
 return [
     'name' => 'Maguk',
-    'lang' => 'es'
+    'lang' => 'es',
+    'shutdown' => false 
 ];
