@@ -1,6 +1,6 @@
 <?php namespace App;
 
-class Controller
+class Controller extends Validator
 {
 
 }
