@@ -1,5 +1,5 @@
 <?php 
-require_once( '../app/requires/system.php' );
+require_once( '../app/defines/system.php' );
 require_once( realpath( dirname(__FILE__).'/../vendor/autoload.php' ) );
 
 use App\Environment;

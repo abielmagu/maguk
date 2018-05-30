@@ -7,7 +7,6 @@ class Environment {
         $env = Finder::get('env.php');
         self::debug($env);
         self::app($env);
-        self::datetimes();
     }
 
     static private function debug($env)
@@ -20,10 +19,6 @@ class Environment {
     static private function app($env)
     {
         date_default_timezone_set( $env['timezone'] );
-    }
-
-    static private function datetimes()
-    {
-        require_once('requires'.DS.'datetimes.php');
+        require_once('defines'.DS.'datetimes.php');
     }
 }
