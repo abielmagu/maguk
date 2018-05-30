@@ -1,7 +1,10 @@
 <?php 
 
+use App\Path;
+
 return [
-    'controllers' => 'controllers/',
-    'models' => 'models/',
-    'views' => 'views/'
+    // Paths MVC
+    'controllers' => Path::base('controllers'.DS),
+    'models'      => Path::base('models'.DS),
+    'views'       => Path::base('views'.DS)
 ];

@@ -18,11 +18,8 @@ class Request {
 
     static public function route()
     {
-        if( is_null( self::$instance ) )
-        {
-            $self = self::getInstance();
-        }
-        return $self->route;
+        self::getInstance();
+        return self::$instance->route;
     }
 
     static public function getInstance()

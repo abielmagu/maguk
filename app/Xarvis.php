@@ -5,7 +5,6 @@ class Xarvis {
 
     public function __construct($route)
     {
-        Environment::on();
         $this->route = $route;
     }
 
@@ -13,9 +12,7 @@ class Xarvis {
     {
         $instance = $this->instanceControllerClass( $this->route->getController() );
         if( !$instance )
-        {
-            die(': Controller not exists;');
-        }
+            Exception::stop(": Controller {$this->route->getController()} not exists;");
         
         $method = $this->existsInstanceMethod($instace, $this->route->getMethod() );
         if( !$method )
@@ -32,14 +29,17 @@ class Xarvis {
         }
     }
 
-    private function instanceControllerClass($nameController)
+    private function instanceControllerClass($name_controller)
     {
-        $classController = ucfirst( strtolower( $nameController ) ).'Controller';
-        $pathController = Config::get('path')['controllers'] . $classController.'.php';
-        if( Finder::exists($pathController) && Finder::readable($pathController) )
+        $class_controller = Tool::upperFirstLetter($name_controller) . 'Controller';
+        $path_controller = Config::get('path','controllers') . $class_controller . '.php';
+        $finder_path_controller = new Finder($path_controller, false);
+
+        if( $finder_path_controller->exists() )
         {
-            Finder::get($pathController);
-            return new $classController();
+            $finder_path_controller->require();
+            $controller_namespace = 'Controllers\\' . $class_controller;
+            return new $controller_namespace();
         }
         return false;
     }

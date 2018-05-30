@@ -1,9 +1,12 @@
-<?php
+<?php namespace Controllers;
 
-class DashboardController {
+use App\Controller;
+use App\View;
+
+class DashboardController extends Controller {
     
     public function index()
     {
-        echo 'Im dashboard index';
+        View::render('dashboard/index');
     }
 }

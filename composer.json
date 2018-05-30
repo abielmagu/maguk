@@ -7,10 +7,10 @@
     "autoload": {
         "psr-4": {
             "Controllers\\": "controllers/",
-            "Models\\": "models/",
-            "Views\\": "views/",
-            "Layers\\": "layers/",
-            "App\\": "app/"
+            "Models\\"     : "models/",
+            "Views\\"      : "views/",
+            "Layers\\"     : "layers/",
+            "App\\"        : "app/"
         }
     }
 }

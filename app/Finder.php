@@ -2,62 +2,58 @@
 
 class Finder {
 
-    static private function validate($thing)
-    {
-        return is_string($thing) && !empty($thing);
-    }
+    private static $instance = null;
+    private $thing;
 
-    static public function get($thing)
+    public function __construct($thing, $base = true)
     {
-        if( self::exists($thing) )
-        {   
-            $path = self::path($thing);
-            if( is_file($path) )
-            {
-                return self::require($path);
-            }
-            return self::scan($path);
-        }
-        return false;
-    }
-
-    static public function exists($thing)
-    {
-        if( self::validate($thing) )
-            return file_exists( self::path($thing) );
-        return false;
-    }
-
-    static public function path($thing)
-    {
-        return self::rootpath() . $thing;
-    }
-
-    static public function require($path)
-    {
-        if( self::validate($path) )
-            return require($path);
-        return false;
-    }
-
-    static public function scan($path)
-    {
-        if( self::validate($path) )
+        if( !Tool::stringNotEmpty($thing) )
         {
-            $scanned = scandir($path);
-            unset($scanned[0], $scanned[1]);
-            return $scanned;
+            Exception::stop('Finder param is not string');
+        }
+        $this->thing = $base ? Path::base($thing) : $thing;
+    }
+
+    static public function get($thing, $base = true)
+    {
+        $self = new Finder($thing, $base);
+
+        if( $self->exists() )
+        {
+            if( is_file($self->thing) )
+            {
+                return $self->require();
+            }
+            return $self->scan();
         }
         return false;
     }
 
-    static public function readable($thing)
+    public function require()
     {
-        return is_readable( self::path($thing) );
+        return require($this->thing);
     }
 
-    static public function rootpath()
+    public function scan()
     {
-        return realpath( dirname( __DIR__ . '../' ) ) . DIRECTORY_SEPARATOR;
+        $scanned = scandir($this->thing);
+        unset($scanned[0],$scanned[1]);
+        return $scanned;
     }
+
+    public function exists()
+    {
+        return file_exists($this->thing);
+    }
+
+    static public function getInstance($thing)
+    {
+        if( is_null( self::$instance ) )
+        {
+            self::$instance = new Finder($thing);
+        }
+        return self::$instance;
+    }
+    private function __clone(){}
+    private function __wakeup(){}
 }

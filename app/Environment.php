@@ -2,7 +2,7 @@
 
 class Environment {
 
-    static public function on()
+    static public function run()
     {
         $env = Finder::get('env.php');
         self::debug($env);
