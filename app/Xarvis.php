@@ -12,7 +12,7 @@ class Xarvis {
     {
         $instance = $this->instanceControllerClass( $this->route->getController() );
         if( !$instance )
-            Exception::stop(": Controller {$this->route->getController()} not exists;");
+            Exception::stop("Controller {$this->route->getController()} not exists");
   
         $method = $this->existsInstanceMethod($instance, $this->route->getMethod() );
         if( !$method )
