@@ -13,8 +13,8 @@ class Xarvis {
         $instance = $this->instanceControllerClass( $this->route->getController() );
         if( !$instance )
             Exception::stop(": Controller {$this->route->getController()} not exists;");
-        
-        $method = $this->existsInstanceMethod($instace, $this->route->getMethod() );
+  
+        $method = $this->existsInstanceMethod($instance, $this->route->getMethod() );
         if( !$method )
             $method = 'index';
         
@@ -46,7 +46,11 @@ class Xarvis {
 
     private function existsInstanceMethod($instance, $method)
     {
-        return method_exists($instance, $method) && is_callable([$instance, $method]) ? $method : false;
+        if( method_exists($instance, $method) && is_callable([$instance, $method]) )
+        {
+            return $method;
+        }
+        return false;
     }
 
     private function existsMethodArgs($args)

@@ -8,7 +8,6 @@ class Template
 
     public function __construct($base)
     {
-        require_once('Helper.php');
         $this->base = $base;
     }
 

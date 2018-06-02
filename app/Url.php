@@ -2,6 +2,7 @@
 
 class Url {
 
+    private static $instance = null;
     private $server;
     private $protocol;
     private $domain;
@@ -11,7 +12,7 @@ class Url {
     private $query;
     private $host;
 
-    public function __construct()
+    private function __construct()
     {
         $this->server   = $_SERVER;
         $this->protocol = isset($this->server['HTTPS']) ? 'https' : 'http';
@@ -21,6 +22,16 @@ class Url {
         $this->public   = str_replace('index.php', '', $this->self);
         $this->query    = $this->server['QUERY_STRING'];
         $this->host     = $this->server['HTTP_HOST'];
+        $this->method   = $this->server['REQUEST_METHOD'];
+    }
+
+    static public function getInstance()
+    {
+        if( is_null( self::$instance ) )
+        {
+            self::$instance = new Url();
+        }
+        return self::$instance;
     }
 
     public function base()
@@ -31,9 +42,22 @@ class Url {
         return $base;
     }
 
-    public function address($query)
+    static public function address($query)
     {
-        return $this->base() . $query;
+        $self = self::getInstance();
+        return $self->base() . $query;
+    }
+
+    static public function method()
+    {
+        $self = self::getInstance();
+        return $self->method;
+    }
+
+    static public function redirect($url)
+    {
+        $self = self::getInstance();
+        header('Location: ' . $self->base() . $url);
     }
 }
 

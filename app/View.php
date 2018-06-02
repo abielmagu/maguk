@@ -6,7 +6,7 @@ class View
     {
         $view_path = self::viewPath($resource);
         
-        if( self::validationRenderData($data) )
+        if( self::validateData($data) )
             extract($data);
         
         $template = new Template( self::viewsBase() );
@@ -23,18 +23,20 @@ class View
         return $resource_path;
     }
 
-    static private function validationRenderData($data)
+    static private function validateData($data)
     {
-        if( !is_null($data) )
+        if( is_array($data) )
         {
-            if( !is_array($data) )
-            {
-                Exception::stop('Data view must a be array param');
-                return false;
-            }
             return true;
         }
-        return false;
+        elseif( !is_null($data) )
+        {
+            Exception::stop('Data view must a be array param');
+        }
+        else
+        {
+            return false;
+        }
     }
 
     static private function viewsBase()

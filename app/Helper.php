@@ -1,7 +1,16 @@
-<?php //namespace App;
+<?php namespace App;
 
-function url($string)
+abstract class Helper
 {
-    $url = new App\Url();
-    return $url->address($string);
+    static public function crumble($data, $die = true)
+    {
+        $shredded = '<pre>' . print_r($data, true) . '</pre>';
+        if( $die ) die($shredded);
+        return $shredded;
+    }
+
+    static public function showme($data)
+    {
+        print_r( self::crumble($data, false) );
+    }
 }
