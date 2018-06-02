@@ -1,7 +1,7 @@
 <?php 
 
 return [
-    'name' => 'Maguk',
+    'name' => 'Xarvis',
     'lang' => 'es',
     'shutdown' => false 
 ];
