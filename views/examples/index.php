@@ -30,7 +30,7 @@
                 <input type="text" class="form-control form-control-sm" form="<?= $formId ?>" name="email" value="<?= $example->email ?>">
             </td>
             <td class="text-nowrap text-right">
-                <form action="<?= address('dashboard/update/'.$example->id) ?>" method='POST' id="<?= $formId ?>">
+                <form action="<?= address('example/update/'.$example->id) ?>" method='POST' id="<?= $formId ?>">
                     <button class="btn btn-warning btn-sm" type="submit">Update</button>
                     <a href="<?= address('example/delete/'.$example->id) ?>" class="btn btn-danger btn-sm">Eliminar</a>
                 </form>
