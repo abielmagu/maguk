@@ -1,6 +1,6 @@
 <?php namespace Models;
 
-use \App\Model;
+use \Core\Model;
 
 class Example extends Model
 {

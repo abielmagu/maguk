@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace System\Core;
 
 class Xarvis {
     private $route;
@@ -12,7 +12,16 @@ class Xarvis {
     {
         $instance = $this->instanceControllerClass( $this->route->getController() );
         if( !$instance )
-            Exception::stop("Controller {$this->route->getController()} not exists");
+        {
+            if( $url = config('redirect', 'home') )
+            {
+                redirect($url);
+            }
+            else
+            {
+                Exception::stop("Controller {$this->route->getController()} not exists");
+            }
+        }
   
         $method = $this->existsInstanceMethod($instance, $this->route->getMethod() );
         if( !$method )

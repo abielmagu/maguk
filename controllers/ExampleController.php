@@ -1,6 +1,6 @@
 <?php namespace Controllers;
 
-use App\Controller;
+use System\Core\Controller;
 use Models\Example;
 
 class ExampleController extends Controller {

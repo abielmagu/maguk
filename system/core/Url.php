@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace System\Core;
 
 class Url {
 
@@ -58,6 +58,25 @@ class Url {
     {
         $self = self::getInstance();
         header('Location: ' . $self->base() . $url);
+    }
+
+    static public function generator($string, array $arguments = [])
+    {
+        $route = self::address($string);
+        if( $arguments )
+        {
+            $counter = count($arguments);
+            $last = $arguments[ $counter - 1 ];
+            $query = '?';
+            foreach($arguments as $key => $value)
+            {
+                $query .= $key.'='.$value;
+                if($key <> $last) $query .= '&';
+            }
+
+            return $route.$query;
+        }
+        return $route;
     }
 }
 

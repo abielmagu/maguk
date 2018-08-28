@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace System\Core;
 
 use \PDO;
 use \PDOException;

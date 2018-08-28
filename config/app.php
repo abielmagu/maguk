@@ -1,7 +1,7 @@
 <?php 
 
 return [
-    'name' => 'Xarvis',
-    'lang' => 'es',
+    'name' => 'Maguk app',
+    'lang' => 'en',
     'shutdown' => false 
 ];

@@ -5,6 +5,6 @@ return [
     'display_errors'         => 1,
     'log_errors'             => 1,
     'error_reporting'        => 1,
-    'timezone'               => 'America/Chicago',
-    'memory_limit'           => '128M'
+    'memory_limit'           => '128M',
+    'timezone'               => 'America/Chicago'
 ];
