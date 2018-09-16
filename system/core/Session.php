@@ -27,13 +27,6 @@ abstract class Session {
         return array_key_exists($key, $_SESSION);
     }
     
-    static public function get($key)
-    {
-        if( self::has($key) )
-            return $_SESSION[$key];
-        return false;
-    }
-    
     static public function set($key, $val)
     {
         if($key <> 'flash')
@@ -46,6 +39,13 @@ abstract class Session {
         return $_SESSION['flash'] = $val;
     }
     
+    static public function get($key)
+    {
+        if( self::has($key) )
+            return $_SESSION[$key];
+        return false;
+    }
+        
     static public function erase($key)
     {
         if( self::exists($key) )
