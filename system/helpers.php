@@ -48,12 +48,12 @@ function session_set($key, $val)
 
 function session_get($key, $val)
 {
-    return System\Core\Session::set($key, $val);
+    return System\Core\Session::get($key, $val);
 }
 
 function session_erase($key)
 {
-    return System\Core\Session::set($key, $val);
+    return System\Core\Session::erase($key, $val);
 }
 
 function flash($val)
