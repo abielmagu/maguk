@@ -17,22 +17,23 @@ class Connection
     {
 		try
 		{
-			$server = Config::get('database');
+			$server = config('database');
 			$dsn  = $server['driver'].': host='.$server['host'].'; dbname='.$server['name'].';';
 			$user = $server['user'];
 			$pass = $server['pass'];
 
-			// $opt = [
+			// $options = [
 			// 	PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
 			// 	PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 			// 	PDO::ATTR_EMULATE_PREPARES   => false,
 			// ];
 			
 			$this->connection = new PDO($dsn,$user,$pass);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 		catch(PDOException $e)
 		{
-			Exception::stop($e->getMessage());
+			Warning::stop( $e->getMessage() );
 		}
 	}
     
@@ -50,8 +51,19 @@ class Connection
 	public function __wakeup(){}
 }
 
+
+
+
+
+
+
 // $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE); // there are other ways to set attributes. this is one
 
 // $connections = Session::getTemp('connections') ?: 1;
 // Session::setTemp('connections', $connections++);
+
+// http://php.net/manual/en/pdo.errorcode.php
+// http://php.net/manual/en/pdostatement.bindvalue.php
+// https://es.stackoverflow.com/questions/59971/php-cu%C3%A1l-es-la-diferencia-entre-bindparam-y-bindvalue-en-pdo
+// 

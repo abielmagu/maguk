@@ -9,7 +9,7 @@ class Finder {
     {
         if( is_string($directory) )
         {
-            $path = BASE.$directory;
+            $path = Path::root().$directory;
             if( file_exists($path) && is_dir($path) )
             {
                 $this->directory = $path;
@@ -19,7 +19,7 @@ class Finder {
 
     public static function exists($path)
     {
-        return file_exists( BASE.$path );
+        return file_exists( Path::root().$path );
     }
     
     public function scan()
@@ -45,14 +45,14 @@ class Finder {
 
     public static function require($file, $once = false)
     {
-        $path = BASE.$file;
+        $path = Path::root().$file;
         if( is_file($path) )
         {
             if( $once && require_once($path) )
             {
                 return true;
             }
-            return require( BASE.$file );
+            return require( Path::root().$file );
         }
         return false;
     }

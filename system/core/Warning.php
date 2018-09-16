@@ -1,9 +1,9 @@
 <?php namespace System\Core;
 
-abstract class Exception
+abstract class Warning
 {
     static public function stop($message)
     {
-        die(":{$message};");
+        die("Xarvis: {$message};");
     }
 }

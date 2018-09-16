@@ -1,46 +1,39 @@
 <?php namespace System\Core;
 
-class View 
+abstract class View 
 {
     static public function render($resource, array $data = null)
     {
-        $view_path = self::viewPath($resource);
-        
-        if( self::validateData($data) )
+        if( self::validate($data) )
             extract($data);
         
-        $template = new Template( self::viewsBase() );
-        require_once($view_path);
+        $resource_path = self::path($resource);
+        $template = new Template();
+        require_once( $resource_path );
     }
 
-    static private function viewPath($resource)
+    static private function path($resource)
     {
-        $resource_path = self::viewsBase() . $resource . '.php';
-
+        $resource_path = Path::views().$resource.'.php';
         if( !is_file($resource_path) )
-            Exception::stop("View {$resource} not exists");
+            Warning::stop("View {$resource} not exists");
 
         return $resource_path;
     }
 
-    static private function validateData($data)
+    static private function validate($data)
     {
         if( is_array($data) )
         {
-            return true;
+            return count($data);
         }
-        elseif( !is_null($data) )
-        {
-            Exception::stop('Data view must a be array param');
-        }
-        else
+        if( is_null($data) )
         {
             return false;
         }
-    }
-
-    static private function viewsBase()
-    {
-        return Config::get('path', 'views');
+        else
+        {
+            Warning::stop('Data view must a be array param');
+        }
     }
 }

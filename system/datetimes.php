@@ -1,4 +1,4 @@
-<?php
+<?php // DATETIMES SYSTEM
 
 // Datetimes
 define('DATETIME_ZERO', '0000-00-00 00:00:00');

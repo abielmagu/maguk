@@ -13,7 +13,7 @@ class Route {
     {
         $this->url = array_shift($_GET);
         $this->slashes = explode('/', $this->url);
-        $this->routes = Config::get('routes');
+        $this->routes = config('routes');
         
         $this->validate();
         
@@ -25,7 +25,7 @@ class Route {
     private function validate()
     {
         if( empty($this->url) && !isset($this->routes['default']) )
-            Exception::stop('Empty url and route-default is not defined');
+            Warning::stop('Empty url and route-default is not defined');
     }
     
     private function setRoutes()
@@ -66,7 +66,7 @@ class Route {
         }
 
         if( is_null($this->address) && is_null($this->default) )
-            Exception::stop('Route not exists');
+            Warning::stop('Route not exists');
     }
     
     private function setResource()

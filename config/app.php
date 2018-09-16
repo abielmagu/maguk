@@ -1,7 +1,7 @@
 <?php 
 
 return [
-    'name' => 'Maguk app',
-    'lang' => 'en',
+    'name' => 'Appname',
+    'lang' => 'es',
     'shutdown' => false 
 ];

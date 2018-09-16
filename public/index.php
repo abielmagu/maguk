@@ -1,6 +1,7 @@
 <?php 
 
-require_once( realpath( dirname(__FILE__).'/../vendor/autoload.php' ) );
+define('DS', DIRECTORY_SEPARATOR);
+require_once( realpath( dirname(__FILE__).DS.'..'.DS.'vendor'.DS.'autoload.php' ) );
 
 use System\Core\Environment;
 use System\Core\Route;

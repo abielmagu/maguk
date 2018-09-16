@@ -2,7 +2,6 @@
 
 return [
     // Dashboard
-    'example' => 'ExampleController:index',
     'dashboard' => 'DashboardController:index',
     
     // Redirect to default-route if the user-route is not found

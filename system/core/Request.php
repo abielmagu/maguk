@@ -2,66 +2,38 @@
 
 class Request {
     private static $instance = null;
+    private $method;
     private $route;
+    private $cookie;
     private $get;
     private $post;
-    private $cookie;
-    private $method;
-    private $vars;
 
-    private function __construct()
+    public function __construct()
     {
-        $this->route  = array_shift($_GET);
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->cookie = $_COOKIE;
         $this->get    = $_GET;
         $this->post   = $_POST;
-        $this->cookie = $_COOKIE;
-        $this->method = Url::method();
-        $this->vars   = $this->getMethodVars();
     }
 
-    static public function getInstance()
+    public function all($bag = 'post')
     {
-        if( is_null( self::$instance ) )
-        {
-            self::$instance = new Request();
-        }
-        return self::$instance;
+        return $this->$bag;
+    }
+    
+    public function exists($key, $bag = 'post')
+    {
+        return array_key_exists($key, $this->$bag);
     }
 
-    static public function route()
+    public function has($key, $bag = 'post')
     {
-        self::getInstance();
-        return self::$instance->route;
+        return isset( $this->$bag[$key] );
     }
 
-    public function exists($key)
+    public function get($key, $bag = 'post')
     {
-        return array_key_exists($key, $this->vars);
-    }
-
-    public function has($key)
-    {
-        return array_key_exists($key, $this->vars) && !empty( $this->vars[$key] );
-    }
-
-    public function all()
-    {
-        return $this->vars;
-    }
-
-    public function get($key)
-    {
-        return $this->vars[$key];
-    }
-
-    private function getMethodVars()
-    {
-        switch( $this->method )
-        {
-            case 'GET' : return $this->get;  break;
-            case 'POST': return $this->post; break;
-            default: return false;
-        }
+        return $this->$bag[$key];
     }
 
     private function __clone(){}

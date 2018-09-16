@@ -1,14 +1,12 @@
 <?php namespace System\Core;
 
 class Environment {
-    
-    static private $root;
+
     static private $env;
     
     static public function prepare()
     {
-        define('BASE', realpath( dirname( __FILE__ ).'/../../') );
-        self::$env  = require( BASE.'/env.php' );
+        self::$env = require( Path::root().'env.php' );
         
         self::debug();
         self::timer();
@@ -27,12 +25,12 @@ class Environment {
     static private function timer()
     {
         date_default_timezone_set( self::$env['timezone'] );
-        require_once( BASE.'/system/datetimes.php' );
+        require_once( Path::system().'datetimes.php' );
     }
     
     static private function requires()
     {
-        require_once( BASE.'/system/defines.php' );
-        require_once( BASE.'/system/helpers.php' );
+        require_once( Path::system().'defines.php' );
+        require_once( Path::system().'helpers.php' );
     }
 }

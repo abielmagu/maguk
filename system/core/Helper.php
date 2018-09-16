@@ -2,15 +2,15 @@
 
 abstract class Helper
 {
-    static public function crumble($data, $die = true)
+    static public function showme($data, $die = true)
     {
         $shredded = '<pre>' . print_r($data, true) . '</pre>';
         if( $die ) die($shredded);
         return $shredded;
     }
 
-    static public function showme($data)
+    static public function crumble($data)
     {
-        print_r( self::crumble($data, false) );
+        print_r( self::showme($data, false) );
     }
 }

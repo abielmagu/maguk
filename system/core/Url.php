@@ -3,28 +3,78 @@
 class Url {
 
     private static $instance = null;
-    private $server;
+    //private $server;
     private $protocol;
     private $domain;
     private $port;
-    private $self;
+    //private $self;
     private $public;
     private $query;
     private $host;
+    private $referer;
+    private $base;
 
     private function __construct()
     {
-        $this->server   = $_SERVER;
-        $this->protocol = isset($this->server['HTTPS']) ? 'https' : 'http';
-        $this->domain   = $this->server['SERVER_NAME'];
-        $this->port     = $this->server['SERVER_PORT'];
-        $this->self     = $this->server['PHP_SELF'];
-        $this->public   = str_replace('index.php', '', $this->self);
-        $this->query    = $this->server['QUERY_STRING'];
-        $this->host     = $this->server['HTTP_HOST'];
-        $this->method   = $this->server['REQUEST_METHOD'];
+        //$this->server   = $_SERVER;
+        $this->protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+        $this->domain   = $_SERVER['SERVER_NAME'];
+        $this->port     = empty($_SERVER['SERVER_PORT']) ? '' : ':'.$_SERVER['SERVER_PORT'];
+        //$this->self     = $_SERVER['PHP_SELF'];
+        $this->public   = str_replace('index.php', '', $_SERVER['PHP_SELF']);
+        $this->query    = $_SERVER['QUERY_STRING'];
+        $this->host     = $_SERVER['HTTP_HOST'];
+        $this->referer  = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+        $this->base     = $this->protocol . '://' . $this->domain . $this->port . $this->public;
     }
 
+    private function location($url = '')
+    {
+        header('Location: '.$url);
+        exit();
+    }
+    
+    static public function address($url)
+    {
+        $self = self::getInstance();
+        return $self->base.$url;
+    }
+
+    static public function redirect($url)
+    {
+        $self = self::getInstance();
+        $redirect = $self->base.$url;
+        $self->location($redirect);
+    }
+    
+    static public function back()
+    {
+        $self = self::getInstance();
+        if( !is_null( $self->referer ) )
+            $self->location( $self->referer );
+        
+        $self->location( $self->base );
+    }
+
+    static public function generator($string, array $arguments = null)
+    {
+        $self = self::getInstance();
+        $route = $self->address($string);
+        return $route;
+        if( is_array($arguments) && $count = count($arguments) )
+        {
+            $last = $arguments[ $count - 1 ];
+            $query = '?';
+            foreach($arguments as $key => $value)
+            {
+                $query .= $key.'='.$value;
+                if($key <> $last) $query .= '&';
+            }
+            return $route.$query;
+        }
+        return $route;
+    }
+    
     static public function getInstance()
     {
         if( is_null( self::$instance ) )
@@ -33,52 +83,8 @@ class Url {
         }
         return self::$instance;
     }
-
-    public function base()
-    {
-        $base  = $this->protocol . '://' . $this->domain;
-        $base .= empty($this->port) ?: ':'.$this->port;
-        $base .= $this->public;
-        return $base;
-    }
-
-    static public function address($query)
-    {
-        $self = self::getInstance();
-        return $self->base() . $query;
-    }
-
-    static public function method()
-    {
-        $self = self::getInstance();
-        return $self->method;
-    }
-
-    static public function redirect($url)
-    {
-        $self = self::getInstance();
-        header('Location: ' . $self->base() . $url);
-    }
-
-    static public function generator($string, array $arguments = [])
-    {
-        $route = self::address($string);
-        if( $arguments )
-        {
-            $counter = count($arguments);
-            $last = $arguments[ $counter - 1 ];
-            $query = '?';
-            foreach($arguments as $key => $value)
-            {
-                $query .= $key.'='.$value;
-                if($key <> $last) $query .= '&';
-            }
-
-            return $route.$query;
-        }
-        return $route;
-    }
 }
+
 
 
 

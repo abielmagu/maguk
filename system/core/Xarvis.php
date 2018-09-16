@@ -24,15 +24,14 @@ class Xarvis {
     private function instanceController()
     {
         $controller = $this->route->getController();
-        $path_controllers = Config::get('path','controllers');
-        $controller_path = $path_controllers.$controller.'.php';
+        $controller_path = Path::controllers().$controller.'.php';
         if( file_exists($controller_path) )
         {
             require_once($controller_path);
             $controller_class = 'Controllers\\'.$controller;
             return new $controller_class();
         }
-        Exception::stop('Controller not exists');
+        Warning::stop('Controller not exists');
     }
     
     private function controllerMethod($instance)

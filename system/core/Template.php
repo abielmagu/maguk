@@ -6,9 +6,9 @@ class Template
     private $filling;
     private $spaces = [];
 
-    public function __construct($base)
+    public function __construct()
     {
-        $this->base = $base;
+        $this->base = Path::views();
     }
 
     public function extends($layout)
@@ -18,11 +18,16 @@ class Template
         return require($layout_file);
     }
 
-    public function include($subview)
+    public function include($view)
     {
         $template = $this;
-        $subview_file = $this->base.$subview.'.php';
-        return include($subview_file);
+        $view_file = $this->base.$view.'.php';
+        return include($view_file);
+    }
+    
+    public function insert($view)
+    {
+        return include($this->base.$view.'.php');
     }
 
     public function space($filled)
@@ -30,9 +35,9 @@ class Template
         return $this->spaces[ $filled ];
     }
 
-    public function fill($space_name)
+    public function fill($spacename)
     {
-        $this->filling = $space_name;
+        $this->filling = $spacename;
         ob_start();
     }
 

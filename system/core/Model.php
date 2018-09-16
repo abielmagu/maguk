@@ -4,17 +4,17 @@ use \PDO;
 
 abstract class Model
 {
-    private $pdo;
-    private $query;
+    protected $pdo;
+    protected $query;
 
     public function __construct()
     {
         $this->pdo = Connection::getInstance();
     }
 
-    public function all()
+    public function all($order = 'DESC')
     {
-        $this->query = "SELECT * FROM {$this->table}";
+        $this->query = "SELECT * FROM {$this->table} ORDER BY id {$order}";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -55,7 +55,7 @@ abstract class Model
 
     public function search($column, $value)
     {
-        $this->query = "SELECT * FROM {$this->table} WHERE :column LIKE :value";
+        $this->query = "SELECT * FROM {$this->table} WHERE column LIKE :value";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':column', $column, PDO::PARAM_STR);
         $stmt->bindValue(':value', $value, PDO::PARAM_STR);
@@ -66,15 +66,15 @@ abstract class Model
     public function find($value, $column = 'id')
     {
         $PDOParam = $this->getPDOParam($value);
-        $this->query = "SELECT * FROM {$this->table} WHERE :column = :value LIMIT 1";
+        $this->query = "SELECT * FROM {$this->table} WHERE {$column} = :value LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
-        $stmt->bindValue(':column', $column, PDO::PARAM_STR);
-        $stmt->bindValue(':value', $value, $PDOParam);
+        //$stmt->bindParam(':column', $column);
+        $stmt->bindValue(':value', $value);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);      
     }
 
-    public function create(array $data)
+    public function store(array $data)
     {
         $this->query = $this->getQueryInsert($data);
         $stmt = $this->pdo->prepare( $this->query );
@@ -88,7 +88,8 @@ abstract class Model
         $this->query .= " WHERE id = ? LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
         array_push($data, $id);
-        return $stmt->execute( array_values($data) );
+        $stmt->execute( array_values($data) );
+        return $stmt->rowCount();
     }
 
     public function delete($id)
@@ -105,12 +106,15 @@ abstract class Model
         return $this->pdo->lastInsertId();
     }
 
-    public function raw($query)
+    public function raw($query, $return = false)
     {
         $this->query = $query;
         $stmt = $this->pdo->prepare( $this->query );
-        $stmt->execute();
-        return $stmt->fetchAll();
+        
+        if( $return )
+            return $stmt->fetchAll();
+        
+        return $stmt->execute();
     }
 
     private function getPDOParam($value)
