@@ -8,6 +8,6 @@ abstract class Controller extends Validator implements iController
 
     public function __construct()
     {
-        //$this->request = Request::getInstance();
+        // code...
     }
 }

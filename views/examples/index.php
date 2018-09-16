@@ -40,4 +40,4 @@
     </tbody>
 </table>
 <?php $template->stop() ?>
-<?php $template->extends('layouts/main') ?>
+<?php $template->expand('layouts/main') ?>

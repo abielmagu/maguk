@@ -35,6 +35,16 @@ class Request {
     {
         return $this->$bag[$key];
     }
+    
+    public function set($key, $value, $bag = 'post')
+    {
+        return $this->$bag[$key] = $value;
+    }
+    
+    public function merge(array $array, $bag = 'post')
+    {
+        return array_merge($this->$bag, $array);
+    }
 
     private function __clone(){}
     private function __wakeup(){}

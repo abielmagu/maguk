@@ -1,8 +1,10 @@
 <?php namespace Models;
 
-use \Core\Model;
+use System\Core\Model;
+use \PDO;
 
 class Example extends Model
 {
     protected $table = 'examples';
+    protected $timestamps = false;
 }

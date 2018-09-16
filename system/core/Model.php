@@ -76,6 +76,14 @@ abstract class Model
 
     public function store(array $data)
     {
+        if( $this->hasTimestamps() )
+        {
+            $timestamps = [
+                'created_at' => DATETIME_NOW,
+                'updated_at' => DATETIME_NOW
+            ];
+            $data = array_merge($data, $timestamps);
+        }
         $this->query = $this->getQueryInsert($data);
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->execute( array_values($data) );
@@ -84,11 +92,31 @@ abstract class Model
 
     public function update(array $data, $id)
     {
+        if( $this->hasTimestamps() )
+        {
+            $timestamps = [
+                'updated_at' => DATETIME_NOW
+            ];
+            $data = array_merge($data, $timestamps);
+        }
+        
         $this->query  = $this->getQueryUpdate($data);
         $this->query .= " WHERE id = ? LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
         array_push($data, $id);
         $stmt->execute( array_values($data) );
+        return $stmt->rowCount();
+    }
+    
+    public function softdelete($id)
+    {
+        $this->query  = "UPDATE {$this->table} 
+                         SET deleted_at = :deleted 
+                         WHERE id = :id LIMIT 1";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->bindValue(':deleted', DATETIME_NOW);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
         return $stmt->rowCount();
     }
 
@@ -155,5 +183,10 @@ abstract class Model
         $values_positions = str_repeat("?,", count($values_array));
         $values = trim($values_positions, ',');
         return $values;
+    }
+    
+    private function hasTimestamps()
+    {
+        return isset($this->timestamps) && $this->timestamps;
     }
 }

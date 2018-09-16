@@ -1,5 +1,4 @@
 <?php 
-
 define('DS', DIRECTORY_SEPARATOR);
 require_once( realpath( dirname(__FILE__).DS.'..'.DS.'vendor'.DS.'autoload.php' ) );
 

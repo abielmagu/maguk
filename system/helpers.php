@@ -36,6 +36,31 @@ function config($file,$key = null)
     return System\Core\Config::get($file,$key);
 }
 
+function session_has($key)
+{
+    return System\Core\Session::has($key);
+}
+
+function session_set($key, $val)
+{
+    return System\Core\Session::set($key, $val);
+}
+
+function session_get($key, $val)
+{
+    return System\Core\Session::set($key, $val);
+}
+
+function session_erase($key)
+{
+    return System\Core\Session::set($key, $val);
+}
+
+function flash($val)
+{
+    return System\Core\Session::flash($val);
+}
+
 function showme($data)
 {
     return System\Core\Helper::showme($data);

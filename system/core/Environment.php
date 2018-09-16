@@ -11,6 +11,7 @@ class Environment {
         self::debug();
         self::timer();
         self::requires();
+        Session::start();
     }
 
     static private function debug()

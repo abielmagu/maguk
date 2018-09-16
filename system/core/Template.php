@@ -2,32 +2,25 @@
 
 class Template 
 {
-    private $base;
+    private $views;
     private $filling;
     private $spaces = [];
 
     public function __construct()
     {
-        $this->base = Path::views();
+        $this->views = Path::views();
     }
 
-    public function extends($layout)
+    public function expand($layout)
     {
         $template = $this;
-        $layout_file = $this->base.$layout.'.php';
-        return require($layout_file);
-    }
-
-    public function include($view)
-    {
-        $template = $this;
-        $view_file = $this->base.$view.'.php';
-        return include($view_file);
+        $grid = $this->views.$layout.'.php';
+        return require($grid);
     }
     
     public function insert($view)
     {
-        return include($this->base.$view.'.php');
+        return include($this->views.$view.'.php');
     }
 
     public function space($filled)
