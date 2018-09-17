@@ -59,7 +59,7 @@ abstract class Validator
     {
         if( count($this->fails) )
         {
-            flash($this->fails);
+            session_set('errors', $this->fails);
             back();
         }
         return true;
