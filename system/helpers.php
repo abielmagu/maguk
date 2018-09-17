@@ -70,3 +70,8 @@ function crumble($data)
 {
     return System\Core\Helper::crumble($data);
 }
+
+function upperFirstLetter($str)
+{
+    return System\Core\Tool::upperFirstLetter($str);
+}
