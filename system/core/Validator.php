@@ -111,4 +111,27 @@ abstract class Validator
         }
         return $val >= $min;        
     }
+    
+    private function unique($column, $data, $table_with_except)
+    {
+        if( strpos($table_with_except,'-') )
+        {
+            list($table, $except) = explode('-', $table_with_except);
+            list($prop, $value) = explode(',', $except) ;
+        }
+        else
+        {
+            $table = $table_with_except;
+        }
+        
+        $model = new Modeling($table);
+        $result = $model->find($data, $column);
+        
+        if( is_object($result) )
+        {
+            if( isset($prop) && $result->$prop !== $value )
+                return false;
+        }
+        return true;
+    }
 }
