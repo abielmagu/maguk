@@ -128,10 +128,23 @@ abstract class Model
         $stmt->execute();
         return $stmt->rowCount();
     }
-
-    public function lastInsert()
+    
+    public function notduplicate($action, array $data, array $find, array $except = null)
     {
-        return $this->pdo->lastInsertId();
+        // $action = 'store' | 'update'
+        // $data = [data, |id]
+        // $find = [column => value] 
+        // $except = [prop => value]
+        
+        $column = key($find);
+        $found = call_user_func_array([$this,'find'], [$find[$column], $column]);
+        $prop = is_array($except) ? key($except) : false;
+        
+        if( !is_object($found) || is_string($prop) && $found->$prop === $except[$prop] )
+        {
+           return call_user_func_array([$this,$action], $data);
+        }
+        return $found;
     }
 
     public function raw($query, $return = false)
@@ -143,6 +156,11 @@ abstract class Model
             return $stmt->fetchAll();
         
         return $stmt->execute();
+    }
+    
+    public function lastInsert()
+    {
+        return $this->pdo->lastInsertId();
     }
 
     private function getPDOParam($value)
