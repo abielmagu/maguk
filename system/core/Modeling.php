@@ -6,6 +6,7 @@ class Modeling extends Model
     
     public function __construct($table = null)
     {
+        parent::__construct();
         $this->table = $table;
     }
 }
