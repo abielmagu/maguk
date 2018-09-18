@@ -129,8 +129,10 @@ abstract class Validator
         
         if( is_object($result) )
         {
-            if( isset($prop) && $result->$prop !== $value )
-                return false;
+            if( isset($prop) && $result->$prop === $value )
+                return true;
+            
+            return false;
         }
         return true;
     }
