@@ -18,8 +18,9 @@ class Template
         return require($grid);
     }
     
-    public function insert($view)
+    public function insert($view, array $data = null)
     {
+        if( is_array($data) ) extract($data);
         return include($this->views.$view.'.php');
     }
 
