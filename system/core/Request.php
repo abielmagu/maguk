@@ -45,6 +45,14 @@ class Request {
     {
         return array_merge($this->$bag, $array);
     }
+    
+    public function erase($key, $bag = 'post')
+    {
+        if( $this->exists($key) )
+            unset( $this->$bag[$key] );
+        return true;
+    }
+    
 
     private function __clone(){}
     private function __wakeup(){}
