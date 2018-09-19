@@ -3,9 +3,12 @@
 abstract class Validator
 {
     private $fails = [];
+    private $validations;
     
     protected function validate(array $data, array $list)
     {
+        $this->validations = config('validations');
+        
         foreach($list as $keyname => $validations)
         {
             $rules = explode(';', $validations);
@@ -19,6 +22,11 @@ abstract class Validator
                 {
                     array_push($arguments, $keyname, $data);
                 }
+                elseif( $method === 'unique' )
+                {
+                    if( isset($data[$keyname]) )
+                        array_push($arguments, $keyname, $data[$keyname], $filter);
+                }
                 else
                 {
                     if( isset($data[$keyname]) )
@@ -30,7 +38,19 @@ abstract class Validator
                 }
                 
                 if( !call_user_func_array([$this,$method], $arguments) )
-                    array_push($this->fails, $keyname);
+                {
+                    if( isset($this->validations[$method]) )
+                    {
+                        $explain = $this->validations[$method];
+                        $limiter = is_null($filter) ?: $filter;
+                        $notice = "{$keyname}:  {$text} {$limiter}";
+                        array_push($this->fails, $notice);
+                    }
+                    else
+                    {
+                        array_push($this->fails, $keyname);
+                    }                    
+                }
             }
         }
         
@@ -131,7 +151,6 @@ abstract class Validator
         {
             if( isset($prop) && $result->$prop === $value )
                 return true;
-            
             return false;
         }
         return true;
