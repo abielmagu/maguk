@@ -42,8 +42,8 @@ abstract class Validator
                     if( isset($this->validations[$method]) )
                     {
                         $explain = $this->validations[$method];
-                        $limiter = is_null($filter) ?: $filter;
-                        $notice = "{$keyname}:  {$text} {$limiter}";
+                        $limiter = is_numeric($filter) ? $filter : '';
+                        $notice = "{$keyname}:  {$explain} {$limiter}";
                         array_push($this->fails, $notice);
                     }
                     else
