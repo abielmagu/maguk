@@ -147,15 +147,21 @@ abstract class Model
         return $found;
     }
 
-    public function raw($query, $return = false)
+    public function raw($query, $fetch = false)
     {
         $this->query = $query;
         $stmt = $this->pdo->prepare( $this->query );
         
-        if( $return )
-            return $stmt->fetchAll();
+        if( $executed = $stmt->execute() )
+        {
+            if( $fetch )
+            {
+                $fetched = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return count($fetched) > 1 ? $fetched : $fetched[0];
+            }
+        }
         
-        return $stmt->execute();
+        return $executed;
     }
     
     public function lastInsert()
