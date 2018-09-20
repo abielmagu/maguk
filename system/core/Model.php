@@ -129,7 +129,7 @@ abstract class Model
         return $stmt->rowCount();
     }
     
-    public function notduplicate($action, array $data, array $find, array $except = null)
+    public function unduplicated($action, array $data, array $find, array $except = null)
     {
         // $action = 'store' | 'update'
         // $data = [data, |id]
