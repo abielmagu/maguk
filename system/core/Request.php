@@ -31,6 +31,11 @@ class Request {
         return isset( $this->$bag[$key] );
     }
 
+    public function void($key, $bag = 'post')
+    {
+        return empty( $this->$bag[$key] );
+    }
+    
     public function get($key, $bag = 'post')
     {
         return $this->$bag[$key];
