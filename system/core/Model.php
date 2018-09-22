@@ -74,6 +74,29 @@ abstract class Model
         return $stmt->fetch(PDO::FETCH_OBJ);      
     }
 
+    public function exists($column, $value, array $except = null)
+    {
+        if( is_array($except) )
+        {
+            $except_column = key($except);
+            $except_value = $except[ $except_column ];
+            $this->query = "SELECT count(*) FROM {$this->table}
+                            WHERE {$column} = {$value} AND {$except_column} <> {$except_value}";
+        }
+        else
+        {
+            $this->query = "SELECT count(*) FROM {$this->table}
+                            WHERE {$column} = $value";
+        }
+        
+        $stmt = $this->pdo->prepare( $this->query );
+        
+        if( $stmt->execute() )
+            return $stmt->fetchColumn();
+        
+        return false;
+    }
+    
     public function store(array $data)
     {
         if( $this->hasTimestamps() )
