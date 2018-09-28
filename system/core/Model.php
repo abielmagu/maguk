@@ -187,7 +187,12 @@ abstract class Model
         return $executed;
     }
     
-    public function lastInsert()
+    protected function prepare($query)
+    {
+        return $this->pdo->prepare($query);
+    }
+    
+    protected function lastInsert()
     {
         return $this->pdo->lastInsertId();
     }
