@@ -75,3 +75,8 @@ function upperFirstLetter($str)
 {
     return System\Core\Tool::upperFirstLetter($str);
 }
+
+function stick($after, $content, $glue = '-')
+{
+    return System\Core\Tool::stick($after, $content, $glue);
+}
