@@ -11,4 +11,9 @@ abstract class Tool
     {
         return ucfirst( strtolower( $string ) );
     }
+    
+    static public function stick($after, $content, $glue = '-')
+    {
+        return $after.$glue.$content;
+    }
 }
