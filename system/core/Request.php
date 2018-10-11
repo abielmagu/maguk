@@ -3,62 +3,58 @@
 class Request {
     private static $instance = null;
     private $method;
-    private $route;
-    private $cookie;
-    private $get;
-    private $post;
+    private $bags = [];
 
     public function __construct()
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->cookie = $_COOKIE;
-        $this->get    = $_GET;
-        $this->post   = $_POST;
+        $this->bags['cookie'] = $_COOKIE;
+        $this->bags['get'] = $_GET;
+        $this->bags['post'] = $_POST;
     }
 
     public function all($bag = 'post')
     {
-        return $this->$bag;
+        return $this->bags[$bag];
     }
     
     public function exists($key, $bag = 'post')
     {
-        return array_key_exists($key, $this->$bag);
+        return array_key_exists($key, $this->bags[$bag]);
     }
 
     public function has($key, $bag = 'post')
     {
-        return isset( $this->$bag[$key] );
+        return isset( $this->bags[$bag][$key] );
     }
 
     public function void($key, $bag = 'post')
     {
-        return empty( $this->$bag[$key] );
+        return empty( $this->bags[$bag][$key] );
     }
     
     public function get($key, $bag = 'post')
     {
-        return $this->$bag[$key];
+        return $this->bags[$bag][$key];
     }
     
     public function set($key, $value, $bag = 'post')
     {
-        return $this->$bag[$key] = $value;
+        return $this->bags[$bag][$key] = $value;
     }
     
     public function merge(array $array, $bag = 'post')
     {
-        return array_merge($this->$bag, $array);
+        return array_merge($this->bags[$bag], $array);
     }
-    
+
     public function erase($key, $bag = 'post')
     {
         if( $this->exists($key) )
-            unset( $this->$bag[$key] );
+            unset( $this->bags[$bag][$key] );
         return true;
     }
     
-
     private function __clone(){}
     private function __wakeup(){}
 }
