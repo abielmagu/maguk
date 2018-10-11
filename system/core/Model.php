@@ -1,6 +1,7 @@
 <?php namespace System\Core;
 
 use \PDO;
+use \PDOException;
 
 abstract class Model
 {
@@ -68,12 +69,11 @@ abstract class Model
         $PDOParam = $this->getPDOParam($value);
         $this->query = "SELECT * FROM {$this->table} WHERE {$column} = :value LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
-        //$stmt->bindParam(':column', $column);
         $stmt->bindValue(':value', $value);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);      
     }
-
+    
     public function exists($column, $value, array $except = null)
     {
         if( is_array($except) )
@@ -81,12 +81,14 @@ abstract class Model
             $except_column = key($except);
             $except_value = $except[ $except_column ];
             $this->query = "SELECT count(*) FROM {$this->table}
-                            WHERE {$column} = {$value} AND {$except_column} <> {$except_value}";
+                            WHERE {$column} = {$value} AND {$except_column} <> {$except_value} 
+                            LIMIT 1";
         }
         else
         {
             $this->query = "SELECT count(*) FROM {$this->table}
-                            WHERE {$column} = $value";
+                            WHERE {$column} = $value 
+                            LIMIT 1";
         }
         
         $stmt = $this->pdo->prepare( $this->query );
@@ -96,7 +98,7 @@ abstract class Model
         
         return false;
     }
-    
+
     public function store(array $data)
     {
         if( $this->hasTimestamps() )
@@ -131,7 +133,7 @@ abstract class Model
         return $stmt->rowCount();
     }
     
-    public function softdelete($id)
+    public function deleteSoft($id)
     {
         $this->query  = "UPDATE {$this->table} 
                          SET deleted_at = :deleted 
@@ -154,7 +156,6 @@ abstract class Model
     
     public function unduplicated($action, array $data, array $find, array $except = null)
     {
-        // $action = 'store' | 'update'
         // $data = [data, |id]
         // $find = [column => value] 
         // $except = [prop => value]
@@ -180,7 +181,7 @@ abstract class Model
             if( $fetch )
             {
                 $fetched = $stmt->fetchAll(PDO::FETCH_OBJ);
-                return count($fetched) > 1 ? $fetched : $fetched[0];
+                return count($fetched) === 1 ? $fetched[0] : $fetched;
             }
         }
         
