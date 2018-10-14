@@ -21,6 +21,14 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function availables()
+    {
+        $this->query = "SELECT * FROM {$this->table} WHERE deleted_at IS NULL ORDER BY id {$order}";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function where($column, $operator, $value)
     {
         $PDOParam = $this->getPDOParam($value);
@@ -72,6 +80,16 @@ abstract class Model
         $stmt->bindValue(':value', $value);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);      
+    }
+
+    public function available($value, $column = 'id')
+    {
+        $PDOParam = $this->getPDOParam($value);
+        $this->query = "SELECT * FROM {$this->table} WHERE {$column} = :value AND deleted_at IS NULL LIMIT 1";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
     
     public function exists($column, $value, array $except = null)
