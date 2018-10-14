@@ -21,7 +21,7 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function availables()
+    public function availables($order = 'DESC')
     {
         $this->query = "SELECT * FROM {$this->table} WHERE deleted_at IS NULL ORDER BY id {$order}";
         $stmt = $this->pdo->prepare( $this->query );
