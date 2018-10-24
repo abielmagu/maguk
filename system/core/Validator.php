@@ -89,7 +89,7 @@ abstract class Validator
 
     private function required($key, $array)
     {
-        return isset( $array[$key] );
+        return isset( $array[$key] ) && !empty( $array[$key] );
     }
 
     private function nullable($key, $array)
@@ -154,5 +154,10 @@ abstract class Validator
             return false;
         }
         return true;
+    }
+    
+    private function notempty($val)
+    {
+        return !empty($val);
     }
 }
