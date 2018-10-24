@@ -172,6 +172,14 @@ abstract class Model
         return $stmt->rowCount();
     }
     
+    public function trash()
+    {
+        $this->query = "SELECT * FROM {$this->table} WHERE deleted_at IS NOT NULL";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    
     public function unduplicated($action, array $data, array $find, array $except = null)
     {
         // $data = [data, |id]
