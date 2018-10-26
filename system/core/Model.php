@@ -29,6 +29,16 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function available($value, $column = 'id')
+    {
+        $PDOParam = $this->getPDOParam($value);
+        $this->query = "SELECT * FROM {$this->table} WHERE {$column} = :value AND deleted_at IS NULL LIMIT 1";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
     public function where($column, $operator, $value)
     {
         $PDOParam = $this->getPDOParam($value);
@@ -43,6 +53,15 @@ abstract class Model
     {
         $positions = $this->getWhereInPositions($values);
         $this->query = "SELECT * FROM {$this->table} WHERE {$column} IN ({$positions})";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->execute( $values );
+        return $stmt->fetchAll(PDO::FETCH_OBJ); 
+    }
+
+    public function whereNotIn($column, array $values)
+    {
+        $positions = $this->getWhereInPositions($values);
+        $this->query = "SELECT * FROM {$this->table} WHERE {$column} NOT IN ({$positions})";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->execute( $values );
         return $stmt->fetchAll(PDO::FETCH_OBJ); 
@@ -80,16 +99,6 @@ abstract class Model
         $stmt->bindValue(':value', $value);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);      
-    }
-
-    public function available($value, $column = 'id')
-    {
-        $PDOParam = $this->getPDOParam($value);
-        $this->query = "SELECT * FROM {$this->table} WHERE {$column} = :value AND deleted_at IS NULL LIMIT 1";
-        $stmt = $this->pdo->prepare( $this->query );
-        $stmt->bindValue(':value', $value);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_OBJ);
     }
     
     public function exists($column, $value, array $except = null)
@@ -151,6 +160,15 @@ abstract class Model
         return $stmt->rowCount();
     }
     
+    public function delete($id)
+    {
+        $this->query = "DELETE FROM {$this->table} WHERE id = :id LIMIT 1";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount();
+    }
+
     public function deleteSoft($id)
     {
         $this->query  = "UPDATE {$this->table} 
@@ -162,15 +180,6 @@ abstract class Model
         $stmt->execute();
         return $stmt->rowCount();
     }
-
-    public function delete($id)
-    {
-        $this->query = "DELETE FROM {$this->table} WHERE id = :id LIMIT 1";
-        $stmt = $this->pdo->prepare( $this->query );
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->rowCount();
-    }
     
     public function trash()
     {
@@ -179,7 +188,7 @@ abstract class Model
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    
+
     public function unduplicated($action, array $data, array $find, array $except = null)
     {
         // $data = [data, |id]
@@ -214,6 +223,11 @@ abstract class Model
         return $executed;
     }
     
+    private function hasTimestamps()
+    {
+        return isset($this->timestamps) && $this->timestamps;
+    }
+
     protected function prepare($query)
     {
         return $this->pdo->prepare($query);
@@ -262,10 +276,5 @@ abstract class Model
         $values_positions = str_repeat("?,", count($values_array));
         $values = trim($values_positions, ',');
         return $values;
-    }
-    
-    private function hasTimestamps()
-    {
-        return isset($this->timestamps) && $this->timestamps;
     }
 }
