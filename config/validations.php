@@ -8,5 +8,6 @@ return [
     'max'      => 'debe ser un maximo de',
     'min'      => 'debe ser un minimo de',
     'unique'   => 'debe ser único',
-    'notempty' => 'no debe ser vacio'
+    'notempty' => 'no debe ser vacio',
+    'equal'    => 'debe contener el mismo valor',
 ];
