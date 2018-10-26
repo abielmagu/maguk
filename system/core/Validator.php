@@ -27,6 +27,10 @@ abstract class Validator
                     if( isset($data[$keyname]) )
                         array_push($arguments, $keyname, $data[$keyname], $filter);
                 }
+                elseif( $method === 'equal' )
+                {
+                    array_push($arguments, $keyname, $filter, $data);
+                }
                 else
                 {
                     if( isset($data[$keyname]) )
@@ -80,7 +84,7 @@ abstract class Validator
         if( count($this->fails) )
         {
             session_set('errors', $this->fails);
-            back();
+            return back();
         }
         return true;
     }
@@ -90,6 +94,11 @@ abstract class Validator
     private function required($key, $array)
     {
         return isset( $array[$key] ) && !empty( $array[$key] );
+    }
+
+    private function notempty($val)
+    {
+        return !empty($val);
     }
 
     private function nullable($key, $array)
@@ -131,6 +140,14 @@ abstract class Validator
         }
         return $val >= $min;        
     }
+
+    private function equal($A, $B, $array)
+    {
+        if( isset( $array[$A] ) && isset( $array[$B] ) )
+            return $array[$A] === $array[$B];
+
+        return false;
+    }
     
     private function unique($column, $data, $table_with_except)
     {
@@ -151,13 +168,9 @@ abstract class Validator
         {
             if( isset($prop) && $result->$prop === $value )
                 return true;
+            
             return false;
         }
         return true;
-    }
-    
-    private function notempty($val)
-    {
-        return !empty($val);
     }
 }
