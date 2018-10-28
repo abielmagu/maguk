@@ -9,6 +9,6 @@ abstract class Hasher
 
     static public function verify($value, $base)
     {
-        return password_verify();
+        return password_verify($value, $base);
     }
 }
