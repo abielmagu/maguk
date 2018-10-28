@@ -80,3 +80,13 @@ function stick($after, $content, $glue = '-')
 {
     return System\Core\Tool::stick($after, $content, $glue);
 }
+
+function hasher($value)
+{
+    return System\Core\Hasher::hash($value);
+}
+
+function hasherVerify($value, $base)
+{
+    return System\Core\Hasher::verify($value, $base);
+}
