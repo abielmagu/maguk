@@ -81,6 +81,11 @@ function stick($after, $content, $glue = '-')
     return System\Core\Tool::stick($after, $content, $glue);
 }
 
+function getFilled(array $elements, array $keys)
+{
+    return System\Core\Tool::getFilled($elements, $keys);
+}
+
 function hasher($value)
 {
     return System\Core\Hasher::hash($value);
