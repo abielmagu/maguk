@@ -16,4 +16,15 @@ abstract class Tool
     {
         return $after.$glue.$content;
     }
+    
+    static public function getFilled(array $elements, array $keys)
+    {
+        $filled = [];
+        foreach($keys as $key)
+        {
+            if( isset($elements[$key]) && !empty($elements[$key]) )
+                array_push($filled, $key);
+        }
+        return $filled;        
+    }
 }
