@@ -20,7 +20,7 @@ class Xarvis {
         if( array_key_exists($route_controller, $layers) )
         {
             $layer_name = $layers[ $route_controller ];
-            $layer_path = Path::layers() . $file_file . '.php';
+            $layer_path = Path::layers() . $layer_name . '.php';
 
             if( file_exists($layer_path) )
             {
