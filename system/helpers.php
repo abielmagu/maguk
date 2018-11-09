@@ -41,6 +41,11 @@ function session_has($key)
     return System\Core\Session::has($key);
 }
 
+function session_exists($key)
+{
+    return System\Core\Session::exists($key);
+}
+
 function session_set($key, $val)
 {
     return System\Core\Session::set($key, $val);
