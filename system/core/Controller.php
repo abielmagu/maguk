@@ -11,11 +11,22 @@ abstract class Controller extends Validator implements iController
     
     protected function message($theme)
     {
+        $colors = [
+            'primary'   => 'alert alert-primary',
+            'secondary' => 'alert alert-secondary',
+            'success'   => 'alert alert-success',
+            'warning'   => 'alert alert-warning',
+            'danger'    => 'alert alert-danger',
+            'info'      => 'alert alert-info',
+        ];
+
         if( !is_null($theme) )
         {
             flash([
-                'color' => 'alert alert-'.$theme[0],
-                'message' => $theme[1]
+                'message' => [
+                    'color' => $colors[ $theme[0] ],
+                    'text'  => $theme[1]
+                ]
             ]);
         }
     }
