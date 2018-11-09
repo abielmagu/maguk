@@ -9,7 +9,7 @@ abstract class Layer implements iLayer
         return session_exists('user');
     }
 
-    static public function identity(array $identities, $user)
+    static public function identify(array $identities, $user)
     {
         $identified = array_filter($identities, function($i) use ($user) {
             return $i === $user;
