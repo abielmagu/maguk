@@ -7,10 +7,9 @@ return [
     'signout' => 'AuthController:signout',
     
     // Dashboard
-    'dashboard' => 'DashboardController:index',
-    // 'dashboard/show/' = 'DashboardController:show' // Route with args like url "dashboard/show/{?}"
+    'dashboard/' => 'DashboardController:index', // Set slash(/) for set arguments on the route
     
     // Redirect to default-route if the user-route is not found
     // It is necessary to assign the keyname of some route of this array;
-    'default' => 'dashboard' 
+    'default' => 'dashboard/' 
 ];
