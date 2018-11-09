@@ -61,6 +61,11 @@ function session_erase($key)
     return System\Core\Session::erase($key);
 }
 
+function session_finish()
+{
+    return System\Core\Session::finish();
+}
+
 function flash($val)
 {
     return System\Core\Session::flash($val);
