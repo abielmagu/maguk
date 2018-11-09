@@ -17,6 +17,12 @@ abstract class Path
         return self::root().'config'.DS;
     }
     
+    static public function layers()
+    {
+        $path = config('paths', 'layers');
+        return self::root().$path;
+    }
+    
     static public function controllers()
     {
         $path = config('paths', 'controllers');
