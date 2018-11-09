@@ -4,9 +4,9 @@ use System\Core\Model;
 
 class Auth extends Model
 {
-    static private $salt = 'join_salt_value';
     protected $table = 'users';
     protected $timestamps = true;
+    static private $salt = 'salt_to_value';
 
     static public function hashToSign($value)
     {
