@@ -13,11 +13,38 @@ class AuthController extends Controller {
 
     public function signing()
     {
-        return true;
+        $request = new Request;
+        $this->validate($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $username = $request->get('username');
+        $model = new Auth;
+        if( $user = $model->find($username, 'email') )
+        {
+            $password = $request->get('password') . Auth::getSalt();
+            if( hasherVerify($password, $user->password) )
+            {
+                $props = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'type' => $user->type,
+                ];
+                session_set('user', $props);
+                return redirect('');
+            }
+        }
+        
+        // $this->message(['danger', 'Usuario o contraseña incorrectos']);
+        session_set('wrong_sign', true);
+        return back();
     }
 
     public function signout()
     {
-        return true;
+        session_finish();
+        return redirect('sign');
     }
 }
