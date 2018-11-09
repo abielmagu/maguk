@@ -3,5 +3,5 @@
 // NameController => NameLayer
 
 return [
-    'AuthController' => 'Auth'
+    'AuthController' => 'AuthLayer'
 ];
