@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
     <title><?= config('app','name') ?></title>
 </head>
-<body class="bg-light">
-    <div class="container-fluid" >
+<body class="bg-secondary">
+    <div class="container-fluid">
     <?= $template->space('content') ?>
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
