@@ -5,7 +5,7 @@
         <form action="#" class="py-3" method='post'>
             <p class="lead text-muted font-weight-bold">APPNAME</p>
             <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="Username" required>
+                <input type="email" class="form-control" name="username" placeholder="Username" required>
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
