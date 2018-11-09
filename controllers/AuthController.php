@@ -38,7 +38,7 @@ class AuthController extends Controller {
         }
         
         // $this->message(['danger', 'Wrong username or password']);
-        session_flash('not_auth');
+        flash('not_auth');
         return back();
     }
 
