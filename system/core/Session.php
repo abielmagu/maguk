@@ -17,13 +17,19 @@ abstract class Session {
         return $_SESSION;
     }
     
-    static public function has($key)
+    static public function has($key, $subkey = null)
     {
-        return isset( $_SESSION[$key] );
+        if( !is_null($subkey) )
+            return isset( $_SESSION[$key][$subkey] ) && !empty( $_SESSION[$key][$subkey] );
+
+        return isset( $_SESSION[$key] ) && !empty($_SESSION[$key]);
     }
     
-    static public function exists($key)
+    static public function exists($key, $subkey = null)
     {
+        if( !is_null($subkey) )
+            return array_key_exists($subkey, $_SESSION[$key]);
+
         return array_key_exists($key, $_SESSION);
     }
     
@@ -39,10 +45,15 @@ abstract class Session {
         return $_SESSION['flash'] = $val;
     }
     
-    static public function get($key)
+    static public function get($key, $subkey = null)
     {
         if( self::has($key) )
+        {
+            if( !is_null($subkey) && isset($_SESSION[$key][$subkey]) )
+                return $_SESSION[$key][$subkey];
+            
             return $_SESSION[$key];
+        }
         return false;
     }
         
