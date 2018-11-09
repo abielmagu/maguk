@@ -15,8 +15,6 @@
                     <p class="text-right m-0">
                         <button type="submit" class="btn btn-primary">Iniciar sesion</button>
                     </p>
-        
-                    
                 </form>
             </div>
             <div class="card-footer text-center">
