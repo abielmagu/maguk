@@ -6,11 +6,12 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Controllers\\": "controllers/",
-            "Models\\"     : "models/",
-            "Views\\"      : "views/",
-            "Layers\\"     : "layers/",
-            "Core\\"       : "core/"
+            "Controllers\\" : "controllers/",
+            "Models\\" : "models/",
+            "Views\\" : "views/",
+            "Layers\\" : "layers/",
+            "System\\Core\\" : "system/core/",
+            "System\\Interfaces\\" : "system/interfaces/"
         }
     }
 }
