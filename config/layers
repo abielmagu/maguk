@@ -1,0 +1,7 @@
+<?php
+
+// NameController => NameLayer
+
+return [
+    'AuthController' => 'Auth'
+];
