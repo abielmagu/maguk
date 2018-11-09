@@ -20,14 +20,14 @@ class ExampleController extends Controller {
         redirect('example');
     }
 
-    public function update($id)
+    public function update($id = null)
     {
         $example_model = new Example();
         $example_model->update($this->request->all(), $id);
         redirect('example');
     }
 
-    public function delete($id)
+    public function delete($id = null)
     {
         $example_model = new Example();
         $example_model->delete($id);
