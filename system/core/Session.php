@@ -53,7 +53,7 @@ abstract class Session {
         return true;
     }
     
-    static public function destroy()
+    static public function finish()
     {
         $_SESSION = [];
         return session_destroy();
