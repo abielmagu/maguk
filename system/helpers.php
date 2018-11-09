@@ -28,32 +28,32 @@ function back()
 
 function view($resource, $data = null)
 {
-    return System\Core\View::render($resource,$data);
+    return System\Core\View::render($resource, $data);
 }
 
-function config($file,$key = null)
+function config($file, $key = null)
 {
-    return System\Core\Config::get($file,$key);
+    return System\Core\Config::get($file, $key);
 }
 
-function session_has($key)
+function session_has($key, $subkey = null)
 {
-    return System\Core\Session::has($key);
+    return System\Core\Session::has($key, $subkey);
 }
 
-function session_exists($key)
+function session_exists($key, $subkey = null)
 {
-    return System\Core\Session::exists($key);
+    return System\Core\Session::exists($key, $subkey);
+}
+
+function session_get($key, $subkey = null)
+{
+    return System\Core\Session::get($key, $subkey);
 }
 
 function session_set($key, $val)
 {
     return System\Core\Session::set($key, $val);
-}
-
-function session_get($key)
-{
-    return System\Core\Session::get($key);
 }
 
 function session_erase($key)
