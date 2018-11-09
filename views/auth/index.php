@@ -1,19 +1,30 @@
 <?php $template->fill('content') ?>
 
 <div class="row mt-4">
-    <div class="col-sm col-sm-4 offset-sm-4 shadow rounded bg-white">
-        <form action="#" class="py-3" method='post'>
-            <p class="lead text-muted font-weight-bold">APPNAME</p>
-            <div class="form-group">
-                <input type="email" class="form-control" name="username" placeholder="Username" required>
+    <div class="col-sm col-sm-4 offset-sm-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <form action="<?= url('signing') ?>" method='post'>
+                    <p class="lead text-muted font-weight-bold">LA POTOSINA EXPRESS</p>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="usuario" placeholder="Usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
+                    </div>
+                    <p class="text-right m-0">
+                        <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+                    </p>
+        
+                    
+                </form>
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <div class="card-footer text-center">
+                <?php if( session_has('wrong_sign') ): ?>
+                    <span class="text-danger">Usuario o contraseña incorrectos</span>
+                <?php session_erase('wrong_sign'); endif ?>
             </div>
-            <p class="text-right m-0">
-                <button type="submit" class="btn btn-primary">Sign</button>
-            </p>
-        </form>
+        </div>
     </div>
 </div>
 
