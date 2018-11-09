@@ -4,5 +4,11 @@ use System\Interfaces\iLayer;
 
 abstract class Layer implements iLayer
 {
-  // Code
+    static public function identity(array $identities, $user)
+    {
+        $identified = array_filter($identities, function($i) use ($user) {
+            return $i === $user['type'];
+        });
+        return $identified;
+    }
 }
