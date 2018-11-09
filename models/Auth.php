@@ -19,4 +19,9 @@ class Auth extends Model
         $value_salt = $value . self::$salt;
         return sha1($value_salt);
     }
+    
+    static public function getSalt()
+    {
+        return self::$salt;
+    }
 }
