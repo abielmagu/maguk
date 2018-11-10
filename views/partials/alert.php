@@ -48,6 +48,6 @@
     <span><?= $message['text'] ?></span>
 </div>
 
-<?php endif ?>
+<?php endif; session_erase('flash') ?>
 
 <?php endif ?>
