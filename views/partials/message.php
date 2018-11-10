@@ -1,24 +1,24 @@
 <?php if( session_has('flash', 'message') ): $message = session_get('flash', 'message') ?>
 
-<?php if($messsage['status'] === 'info'): ?>
+<?php if($message['status'] === 'info'): ?>
 <span class="text-info"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'success'): ?>
+<?php elseif($message['status'] === 'success'): ?>
 <span class="text-success"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'warning'): ?>
+<?php elseif($message['status'] === 'warning'): ?>
 <span class="text-warning"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'danger'): ?>
+<?php elseif($message['status'] === 'danger'): ?>
 <span class="text-danger"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'dark'): ?>
+<?php elseif($message['status'] === 'dark'): ?>
 <span class="text-dark"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'secondary'): ?>
+<?php elseif($message['status'] === 'secondary'): ?>
 <span class="text-secondary"><?= $message['text'] ?></span>
 
-<?php elseif($messsage['status'] === 'light'): ?>
+<?php elseif($message['status'] === 'light'): ?>
 <span class="text-light"><?= $message['text'] ?></span>
 
 <?php else: ?>
