@@ -24,6 +24,6 @@
 <?php else: ?>
 <span class="text-primary"><?= $message['text'] ?></span>
 
-<?php endif ?>
+<?php endif; session_erase('flash') ?>
 
 <?php endif ?>
