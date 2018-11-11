@@ -18,9 +18,10 @@ abstract class Layer implements iLayer
     {
         return ! self::signed($type);
     }
-    
-    static public function only(array $only, $type)
+
+    static public function only(array $only)
     {
+        $type = session_get('user', 'type');
         $matched = array_filter($only, function($i) use ($type) {
             return $i === $type;
         });
