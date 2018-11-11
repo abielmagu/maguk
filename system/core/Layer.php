@@ -14,6 +14,11 @@ abstract class Layer implements iLayer
         return $signed;
     }
 
+    static public function unsigned($type = null)
+    {
+        return ! self::signed($type);
+    }
+    
     static public function only(array $only, $type)
     {
         $matched = array_filter($only, function($i) use ($type) {
