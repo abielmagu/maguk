@@ -36,6 +36,11 @@ function config($file, $key = null)
     return System\Core\Config::get($file, $key);
 }
 
+function path($route)
+{
+    return System\Core\Path::root() . $route;
+}
+
 function session_has($key, $subkey = null)
 {
     return System\Core\Session::has($key, $subkey);
