@@ -67,6 +67,16 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_OBJ); 
     }
 
+    public function isNull($column, $not = false)
+    {
+        $this->query = "SELECT * FROM {$this->table} WHERE {$column} IS ";
+        $this->query .= $not ? "NOT NULL" : "NULL";
+        $this->query .= " ORDER BY id DESC";
+        $stmt = $this->pdo->prepare( $this->query );
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ); 
+    }
+    
     public function between($column, $min, $max, $negative = false)
     {
         $PARAM_min = is_string($min) ? PDO::PARAM_STR : PDO::PARAM_INT;
