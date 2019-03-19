@@ -12,7 +12,15 @@ abstract class Model
     {
         $this->pdo = Connection::getInstance();
     }
-
+ 
+    public function getNameTable()
+    {
+        if( isset($this->table) )
+            return $this->table;
+            
+        return false;
+    }
+    
     public function all($order = 'DESC')
     {
         $this->query = "SELECT * FROM {$this->table} ORDER BY id {$order}";
