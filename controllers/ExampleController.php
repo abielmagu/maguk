@@ -20,6 +20,13 @@ class ExampleController extends Controller {
     
     public function store()
     {
+        $this->validate(
+            $this->request->all(),
+            [
+                'input' => 'required;string...'
+            ]
+        );
+        
         $example_model = new Example();
         
         if( $id = $example_model->store( $this->request->all() ) )
