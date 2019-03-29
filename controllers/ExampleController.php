@@ -12,7 +12,12 @@ class ExampleController extends Controller {
         $examples = $example_model->all();
         return view('examples/index', compact('examples'));
     }
-
+    
+    public function create()
+    {
+        // code
+    }
+    
     public function store()
     {
         $example_model = new Example();
@@ -20,6 +25,11 @@ class ExampleController extends Controller {
         return redirect('example');
     }
 
+    public function edit($id = null)
+    {
+        // code
+    }
+    
     public function update($id = null)
     {
         $example_model = new Example();
@@ -27,6 +37,11 @@ class ExampleController extends Controller {
         return redirect('example');
     }
 
+    public function warning($id = null)
+    {
+        // code
+    }
+    
     public function delete($id = null)
     {
         $example_model = new Example();
