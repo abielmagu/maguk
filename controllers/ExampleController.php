@@ -10,27 +10,27 @@ class ExampleController extends Controller {
     {
         $example_model = new Example();
         $examples = $example_model->all();
-        view('examples/index', compact('examples'));
+        return view('examples/index', compact('examples'));
     }
 
     public function store()
     {
         $example_model = new Example();
         $example_model->create( $this->request->all() );
-        redirect('example');
+        return redirect('example');
     }
 
     public function update($id = null)
     {
         $example_model = new Example();
         $example_model->update($this->request->all(), $id);
-        redirect('example');
+        return redirect('example');
     }
 
     public function delete($id = null)
     {
         $example_model = new Example();
         $example_model->delete($id);
-        redirect('example');  
+        return redirect('example');  
     }
 }
