@@ -21,7 +21,17 @@ class ExampleController extends Controller {
     public function store()
     {
         $example_model = new Example();
-        $example_model->create( $this->request->all() );
+        
+        if( $id = $example_model->store( $this->request->all() ) )
+        {
+            $msg = ['success', 'Success!'];
+        }
+        else
+        {
+            $msg = ['danger', 'Fail!'];
+        }
+        
+        $this->message($msg);
         return redirect('example');
     }
 
