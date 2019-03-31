@@ -8,50 +8,50 @@ class Request {
     public function __construct()
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->bags['cookie'] = $_COOKIE;
-        $this->bags['get'] = $_GET;
-        $this->bags['post'] = $_POST;
+        $this->bags['COOKIE'] = $_COOKIE;
+        $this->bags['GET'] = $_GET;
+        $this->bags['POST'] = $_POST;
     }
 
     public function all($bag = 'post')
     {
-        return $this->bags[$bag];
+        return $this->bags[ strtoupper($bag) ];
     }
     
     public function exists($key, $bag = 'post')
     {
-        return array_key_exists($key, $this->bags[$bag]);
+        return array_key_exists($key, $this->bags[ strtoupper($bag) ]);
     }
 
     public function has($key, $bag = 'post')
     {
-        return isset( $this->bags[$bag][$key] );
+        return isset( $this->bags[ strtoupper($bag) ][$key] );
     }
 
-    public function void($key, $bag = 'post')
+    public function isEmpty($key, $bag = 'post')
     {
-        return empty( $this->bags[$bag][$key] );
+        return empty( $this->bags[ strtoupper($bag) ][$key] );
     }
     
     public function get($key, $bag = 'post')
     {
-        return $this->bags[$bag][$key];
+        return $this->bags[ strtoupper($bag) ][$key];
     }
     
     public function set($key, $value, $bag = 'post')
     {
-        return $this->bags[$bag][$key] = $value;
+        return $this->bags[ strtoupper($bag) ][$key] = $value;
     }
     
     public function merge(array $array, $bag = 'post')
     {
-        return array_merge($this->bags[$bag], $array);
+        return array_merge($this->bags[ strtoupper($bag) ], $array);
     }
 
     public function erase($key, $bag = 'post')
     {
         if( $this->exists($key) )
-            unset( $this->bags[$bag][$key] );
+            unset( $this->bags[ strtoupper($bag) ][$key] );
         return true;
     }
     
