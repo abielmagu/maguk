@@ -1,8 +1,6 @@
 <?php namespace System\Core;
-
 use \PDO;
 use \PDOException;
-
 abstract class Model
 {
     protected $pdo;
@@ -90,7 +88,6 @@ abstract class Model
         $PARAM_min = is_string($min) ? PDO::PARAM_STR : PDO::PARAM_INT;
         $PARAM_max = is_string($max) ? PDO::PARAM_STR : PDO::PARAM_INT;
         $NOT = $negative ? 'NOT' : '';
-
         $this->query = "SELECT * FROM {$this->table} WHERE {$column} {$NOT} BETWEEN :min AND :max";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':min', $min, $PARAM_min);
@@ -147,13 +144,8 @@ abstract class Model
     public function store(array $data)
     {
         if( $this->hasTimestamps() )
-        {
-            $timestamps = [
-                'created_at' => DATETIME_NOW,
-                'updated_at' => DATETIME_NOW
-            ];
-            $data = array_merge($data, $timestamps);
-        }
+            $data = array_merge($data, ['created_at' => DATETIME_NOW, 'updated_at' => DATETIME_NOW]);
+
         $this->query = $this->getQueryInsert($data);
         $stmt = $this->pdo->prepare( $this->query );
         if( $stmt->execute( array_values($data) ) )
@@ -162,29 +154,44 @@ abstract class Model
         return false;
     }
 
-    public function update(array $data, $id)
+    public function update(array $data, $where, $justone = true)
     {
         if( $this->hasTimestamps() )
-        {
-            $timestamps = [
-                'updated_at' => DATETIME_NOW
-            ];
-            $data = array_merge($data, $timestamps);
-        }
+            $data = array_merge($data, ['updated_at' => DATETIME_NOW]);
         
-        $this->query  = $this->getQueryUpdate($data);
-        $this->query .= " WHERE id = ? LIMIT 1";
+        $this->query = $this->getQueryUpdate($data);
+
+        if( is_array($where) && count($where) )
+        {
+            foreach($where as $column => $value)
+            {
+                $this->query .= " AND {$column} = ?";
+                array_push($data, $value);
+            }
+        }
+        else
+        {
+            $this->query .= " WHERE id = ?";
+            array_push($data, $where);
+        }
+
+        if( $justone )
+            $this->query .= " LIMIT 1";
+
         $stmt = $this->pdo->prepare( $this->query );
-        array_push($data, $id);
         if( $stmt->execute( array_values($data) ) )
             return $stmt->rowCount();
         
         return false;
     }
     
-    public function delete($id)
+    public function delete($id, $justone = true)
     {
-        $this->query = "DELETE FROM {$this->table} WHERE id = :id LIMIT 1";
+        $this->query = "DELETE FROM {$this->table} WHERE id = :id";
+
+        if( $justone )
+            $this->query .= " LIMIT 1";
+
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         if( $stmt->execute() ) 
@@ -195,9 +202,9 @@ abstract class Model
 
     public function deleteSoft($id)
     {
-        $this->query  = "UPDATE {$this->table} 
-                         SET deleted_at = :deleted 
-                         WHERE id = :id LIMIT 1";
+        $this->query = "UPDATE {$this->table} 
+                        SET deleted_at = :deleted 
+                        WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':deleted', DATETIME_NOW);
         $stmt->bindValue(':id', $id);
@@ -216,11 +223,7 @@ abstract class Model
     }
 
     public function unduplicated($action, array $data, array $find, array $except = null)
-    {
-        // $data = [data, |id]
-        // $find = [column => value] 
-        // $except = [prop => value]
-        
+    {        
         $column = key($find);
         $found = call_user_func_array([$this,'find'], [$find[$column], $column]);
         $prop = is_array($except) ? key($except) : false;
@@ -230,6 +233,10 @@ abstract class Model
            return call_user_func_array([$this,$action], $data);
         }
         return $found;
+        
+        // $data = [data, |id]
+        // $find = [column => value] 
+        // $except = [prop => value]
     }
 
     public function raw($query, $fetch = false)
