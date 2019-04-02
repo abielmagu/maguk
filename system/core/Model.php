@@ -161,18 +161,36 @@ abstract class Model
         
         $this->query = $this->getQueryUpdate($data);
 
-        if( is_array($where) && count($where) )
+        if( is_array($where) )
         {
+            $line = null;
             foreach($where as $column => $value)
             {
-                $this->query .= " AND {$column} = ?";
-                array_push($data, $value);
+                $line = is_null($line) ? " WHERE {$column}" : " AND {$column}";
+                if( is_null($value) )
+                {
+                    $line .= ' IS NULL';
+                }
+                elseif( $value === '!null')
+                {
+                    $line .= ' IS NOT NULL';
+                }
+                elseif( strpos($value, '!') === 0 )
+                {
+                    $value = str_replace('!', '', $value);
+                    $line .= " != '{$value}'";
+                }
+                else
+                {
+                    $line .= " = '{$value}'";
+                }
+                
+                $this->query .= $line;
             }
         }
         else
         {
-            $this->query .= " WHERE id = ?";
-            array_push($data, $where);
+            $this->query .= " WHERE id = {$where}";
         }
 
         if( $justone )
