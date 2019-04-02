@@ -156,8 +156,10 @@ abstract class Model
         }
         $this->query = $this->getQueryInsert($data);
         $stmt = $this->pdo->prepare( $this->query );
-        $stmt->execute( array_values($data) );
-        return $this->lastInsert();
+        if( $stmt->execute( array_values($data) ) )
+            return $this->lastInsert();
+        
+        return false;
     }
 
     public function update(array $data, $id)
@@ -174,8 +176,10 @@ abstract class Model
         $this->query .= " WHERE id = ? LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
         array_push($data, $id);
-        $stmt->execute( array_values($data) );
-        return $stmt->rowCount();
+        if( $stmt->execute( array_values($data) ) )
+            return $stmt->rowCount();
+        
+        return false;
     }
     
     public function delete($id)
@@ -183,8 +187,10 @@ abstract class Model
         $this->query = "DELETE FROM {$this->table} WHERE id = :id LIMIT 1";
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->rowCount();
+        if( $stmt->execute() ) 
+            return $stmt->rowCount();
+        
+        return false;
     }
 
     public function deleteSoft($id)
@@ -195,8 +201,10 @@ abstract class Model
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':deleted', DATETIME_NOW);
         $stmt->bindValue(':id', $id);
-        $stmt->execute();
-        return $stmt->rowCount();
+        if( $stmt->execute() )
+            return $stmt->rowCount();
+        
+        return false;
     }
     
     public function trash()
@@ -234,7 +242,8 @@ abstract class Model
             if( $fetch )
             {
                 $fetched = $stmt->fetchAll(PDO::FETCH_OBJ);
-                return count($fetched) === 1 ? $fetched[0] : $fetched;
+                return $fetched;
+                // return count($fetched) === 1 ? $fetched[0] : $fetched;
             }
         }
         
