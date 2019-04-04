@@ -93,18 +93,19 @@ abstract class Validator
 
     private function required($key, $array)
     {
-        return isset( $array[$key] ) && !empty( $array[$key] );
+        return isset( $array[$key] ) && !empty( trim($array[$key]) );
     }
 
     private function notempty($val)
     {
-        return !empty($val);
+        return !empty( trim($val) );
     }
 
     private function nullable($key, $array)
     {
         if( !array_key_exists($key, $array) || isset($array[$key]) )
             unset($this->fails[$key]);
+        
         return true;
     }
     
@@ -126,18 +127,16 @@ abstract class Validator
     private function max($val, $max)
     {
         if( $this->string($val) )
-        {
             return strlen($val) <= $max; 
-        }
+        
         return $val <= $max;
     }
 
     private function min($val, $min)
     {
         if( $this->string($val) )
-        {
-            return strlen($val) >= $min; 
-        }
+            return strlen($val) >= $min;
+        
         return $val >= $min;        
     }
 
