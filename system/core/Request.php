@@ -30,7 +30,7 @@ class Request {
 
     public function isEmpty($key, $bag = 'post')
     {
-        return empty( $this->bags[ strtoupper($bag) ][$key] );
+        return empty( trim($this->bags[ strtoupper($bag) ][$key]) );
     }
     
     public function get($key, $bag = 'post')
