@@ -4,7 +4,9 @@ use System\Core\Request;
 use System\Core\Controller;
 use Models\Example;
 
-class ExampleController extends Controller {
+class ExampleController extends Controller
+{
+    use \Traits\ExampleTrait;
     
     public function index()
     {
