@@ -1,0 +1,18 @@
+{
+    "name": "abielmagu/maguk",
+    "description": "A simple and great vanilla php framework",
+    "type": "framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Controllers\\" : "controllers/",
+            "Traits\\" : "traits/",
+            "Models\\" : "models/",
+            "Views\\" : "views/",
+            "Layers\\" : "layers/",
+            "System\\Core\\" : "system/core/",
+            "System\\Interfaces\\" : "system/interfaces/"
+        }
+    },
+    "require": {}
+}
