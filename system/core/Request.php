@@ -9,7 +9,7 @@ class Request {
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->bags['COOKIE'] = $_COOKIE;
-        $this->bags['GET'] = $_GET;
+        $this->bags['URL'] = $_GET;
         $this->bags['POST'] = $_POST;
     }
 
