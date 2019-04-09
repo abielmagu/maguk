@@ -21,9 +21,9 @@ function redirect($string)
     return System\Core\Url::redirect($string);
 }
 
-function back()
+function back($return = false)
 {
-    return System\Core\Url::back();
+    return System\Core\Url::back($return);
 }
 
 function view($resource, $data = null)
