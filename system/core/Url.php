@@ -3,11 +3,11 @@
 class Url {
 
     private static $instance = null;
-    //private $server;
+    // private $server;
+    // private $self;
     private $protocol;
     private $domain;
     private $port;
-    //private $self;
     private $public;
     private $query;
     private $host;
@@ -16,11 +16,11 @@ class Url {
 
     private function __construct()
     {
-        //$this->server   = $_SERVER;
+        // $this->server   = $_SERVER;
+        // $this->self     = $_SERVER['PHP_SELF'];
         $this->protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
         $this->domain   = $_SERVER['SERVER_NAME'];
         $this->port     = empty($_SERVER['SERVER_PORT']) ? '' : ':'.$_SERVER['SERVER_PORT'];
-        //$this->self     = $_SERVER['PHP_SELF'];
         $this->public   = str_replace('index.php', '', $_SERVER['PHP_SELF']);
         $this->query    = $_SERVER['QUERY_STRING'];
         $this->host     = $_SERVER['HTTP_HOST'];
@@ -47,13 +47,15 @@ class Url {
         $self->location($redirect);
     }
     
-    static public function back()
+    static public function back($return = false)
     {
         $self = self::getInstance();
-        if( !is_null( $self->referer ) )
-            $self->location( $self->referer );
+        $backurl = !is_null( $self->referer ) ? $self->referer : $self->base;
+
+        if( $return )
+            return $backurl;
         
-        $self->location( $self->base );
+        return $self->location( $backurl );
     }
 
     static public function generator($string, array $arguments = null)
