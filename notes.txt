@@ -1,0 +1,18 @@
+Printable CSS
+
+CSS: The Perfect Print Stylesheet
+https://www.jotform.com/blog/css-perfect-print-stylesheet-98272/
+
+How to print your HTML with style
+https://flaviocopes.com/css-printing/
+
+How To Set Up A Print Style Sheet
+https://www.smashingmagazine.com/2011/11/how-to-set-up-a-print-style-sheet/
+
+Designing For Print With CSS
+https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/
+
+Landscape printing from HTML
+https://stackoverflow.com/questions/138422/landscape-printing-from-html
+
+https://print-css.rocks/
