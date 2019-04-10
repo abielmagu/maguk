@@ -109,14 +109,29 @@ abstract class Validator
         return true;
     }
     
+    private function email($val)
+    {
+        return filter_var($val, FILTER_VALIDATE_EMAIL);
+    }
+    
     private function string($val)
     {
         return is_string($val);
     }
     
-    private function email($val)
+    private function numeric($val)
     {
-        return filter_var($val, FILTER_VALIDATE_EMAIL);
+        return is_numeric($val);
+    }
+    
+    private function object($val)
+    {
+        return is_object($val);
+    }
+    
+    private function bool($val)
+    {
+        return is_bool($val);
     }
     
     private function integer($val)
@@ -139,7 +154,7 @@ abstract class Validator
         
         return $val >= $min;        
     }
-
+    
     private function equal($A, $B, $array)
     {
         if( isset( $array[$A] ) && isset( $array[$B] ) )
