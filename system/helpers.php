@@ -1,5 +1,10 @@
 <?php // HELPERS
 
+function home_url(array $arguments = null)
+{
+    return System\Core\Url::getRoute('', $arguments);
+}
+
 function url($route, array $arguments = null)
 {
     return System\Core\Url::getRoute($route, $arguments);
