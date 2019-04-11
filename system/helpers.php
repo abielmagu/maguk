@@ -51,6 +51,11 @@ function session_exists($key, $subkey = null)
     return System\Core\Session::exists($key, $subkey);
 }
 
+function session_all()
+{
+    return System\Core\Session::all();
+}
+
 function session_get($key, $subkey = null)
 {
     return System\Core\Session::get($key, $subkey);
