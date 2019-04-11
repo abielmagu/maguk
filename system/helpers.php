@@ -1,44 +1,38 @@
 <?php // HELPERS
 
-function url($string, array $arguments = null)
+function url($route, array $arguments = null)
 {
-    return System\Core\Url::generator($string, $arguments);
+    return System\Core\Url::getRoute($route, $arguments);
 }
 
-function address($string)
+function redirect($string, array $arguments = null)
 {
-    return System\Core\Url::address($string);
+    return System\Core\Url::redirect($string, $arguments);
+}
+
+function back()
+{
+    return System\Core\Url::back();
 }
 
 function asset($path)
 {
-    $asset = 'assets/'.$path;
-    return address($asset);
-}
-
-function redirect($string)
-{
-    return System\Core\Url::redirect($string);
-}
-
-function back($return = false)
-{
-    return System\Core\Url::back($return);
+    return url("assets/{$path}");
 }
 
 function view($resource, $data = null)
 {
-    return System\Core\View::render($resource, $data);
+    return System\Core\View::render($resource,$data);
 }
 
 function config($file, $key = null)
 {
-    return System\Core\Config::get($file, $key);
+    return System\Core\Config::get($file,$key);
 }
 
-function path($route)
+function path($finder)
 {
-    return System\Core\Path::root() . $route;
+    return System\Core\Path::root() . $finder;
 }
 
 function session_has($key, $subkey = null)
@@ -96,7 +90,7 @@ function upperFirstLetter($str)
     return System\Core\Tool::upperFirstLetter($str);
 }
 
-function stick($after, $content, $glue = '-')
+function stick($after, $content, $glue = '')
 {
     return System\Core\Tool::stick($after, $content, $glue);
 }
