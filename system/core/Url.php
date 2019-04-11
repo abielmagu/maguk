@@ -3,86 +3,88 @@
 class Url {
 
     private static $instance = null;
-    // private $server;
-    // private $self;
+    private $server;
     private $protocol;
     private $domain;
-    private $port;
-    private $public;
-    private $query;
     private $host;
+    private $port;
+    private $self;
+    private $query;
+    private $url;
+    private $uri;
     private $referer;
+    private $public;
     private $base;
+    private $base_port;
 
     private function __construct()
     {
-        // $this->server   = $_SERVER;
-        // $this->self     = $_SERVER['PHP_SELF'];
-        $this->protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-        $this->domain   = $_SERVER['SERVER_NAME'];
-        $this->port     = empty($_SERVER['SERVER_PORT']) ? '' : ':'.$_SERVER['SERVER_PORT'];
-        $this->public   = str_replace('index.php', '', $_SERVER['PHP_SELF']);
-        $this->query    = $_SERVER['QUERY_STRING'];
-        $this->host     = $_SERVER['HTTP_HOST'];
-        $this->referer  = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
-        $this->base     = $this->protocol . '://' . $this->domain . $this->port . $this->public;
+        $this->server   = $_SERVER;
+        $this->protocol = isset($this->server['HTTPS']) ? 'https' : 'http';
+        $this->domain   = $this->server['SERVER_NAME'];
+        $this->host     = $this->server['HTTP_HOST'];
+        $this->dns      = "{$this->protocol}://{$this->domain}";
+        $this->port     = !empty($this->server['SERVER_PORT']) ? ":{$this->server['SERVER_PORT']}" : '';
+        $this->self     = $this->server['PHP_SELF'];
+        $this->query    = $this->server['QUERY_STRING'];
+        $this->url      = $this->server['REDIRECT_URL'];
+        $this->uri      = $this->server['REQUEST_URI'];
+        $this->referer  = isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
+        $this->public   = str_replace('index.php', '', $this->server['PHP_SELF']);
+        $this->base     = $this->dns.$this->public;
+        $this->base_port = $this->dns.$this->port.$this->public;
     }
 
     private function location($url = '')
     {
-        header('Location: '.$url);
-        exit();
-    }
-    
-    static public function address($url)
-    {
-        $self = self::getInstance();
-        return $self->base.$url;
+        return header('Location: '.$url);
+        exit;
     }
 
-    static public function redirect($url)
+    private function getQuery( array $args = [] )
     {
-        $self = self::getInstance();
-        $redirect = $self->base.$url;
-        $self->location($redirect);
-    }
-    
-    static public function back($return = false)
-    {
-        $self = self::getInstance();
-        $backurl = !is_null( $self->referer ) ? $self->referer : $self->base;
+        if( !is_array($args) || !count($args) ) 
+            return '';
 
-        if( $return )
-            return $backurl;
-        
-        return $self->location( $backurl );
-    }
+        $query  = '?';
+        $packet = [];
 
-    static public function generator($string, array $arguments = null)
-    {
-        $self = self::getInstance();
-        $route = $self->address($string);
-        return $route;
-        if( is_array($arguments) && $count = count($arguments) )
+        foreach($args as $pos => $value)
         {
-            $last = $arguments[ $count - 1 ];
-            $query = '?';
-            foreach($arguments as $key => $value)
-            {
-                $query .= $key.'='.$value;
-                if($key <> $last) $query .= '&';
-            }
-            return $route.$query;
+            $key = is_string($pos) ? $pos : "a{$pos}";
+            $item = "{$key}={$value}";
+            array_push($packer, $item);
         }
-        return $route;
+
+        $query .= implode('&', $packed);
+        return $query;
+    }
+
+    static public function getRoute($url, array $args = [])
+    {   
+        $self  = self::getInstance();
+        $query = $self->getQuery($args);
+        return $self->base.$url.$query;
+    }
+
+    static public function redirect($url, array $args = [])
+    {
+        $route = self::getRoute($url, $args);
+        return $self->location( $route );
     }
     
+    static public function back()
+    {
+        $self = self::getInstance();
+        $redirect = !is_null( $self->referer ) ? $self->referer : $self->base;
+        return $self->location( $redirect );
+    }
+
     static public function getInstance()
     {
         if( is_null( self::$instance ) )
-        {
             self::$instance = new Url();
-        }
+
         return self::$instance;
     }
 }
