@@ -69,6 +69,7 @@ class Url {
 
     static public function redirect($url, array $args = [])
     {
+        $self  = self::getInstance();
         $route = self::getRoute($url, $args);
         return $self->location( $route );
     }
