@@ -27,7 +27,7 @@ class Url {
         $this->port     = !empty($this->server['SERVER_PORT']) ? ":{$this->server['SERVER_PORT']}" : '';
         $this->self     = $this->server['PHP_SELF'];
         $this->query    = $this->server['QUERY_STRING'];
-        $this->url      = $this->server['REDIRECT_URL'];
+        $this->url      = isset($this->server['REDIRECT_URL']) ? $this->server['REDIRECT_URL'] : null;
         $this->uri      = $this->server['REQUEST_URI'];
         $this->referer  = isset($this->server['HTTP_REFERER']) ? $this->server['HTTP_REFERER'] : null;
         $this->public   = str_replace('index.php', '', $this->server['PHP_SELF']);
@@ -41,7 +41,7 @@ class Url {
         exit;
     }
 
-    private function getQuery( array $args = [] )
+    private function getQuery( $args = [] )
     {
         if( !is_array($args) || !count($args) ) 
             return '';
@@ -60,14 +60,14 @@ class Url {
         return $query;
     }
 
-    static public function getRoute($url, array $args = [])
+    static public function getRoute($url, $args = null)
     {   
         $self  = self::getInstance();
         $query = $self->getQuery($args);
         return $self->base.$url.$query;
     }
 
-    static public function redirect($url, array $args = [])
+    static public function redirect($url, $args = null)
     {
         $self  = self::getInstance();
         $route = self::getRoute($url, $args);
