@@ -5,7 +5,9 @@ abstract class Helper
     static public function showme($data, $exit = true)
     {
         $shredded = '<pre>' . print_r($data, true) . '</pre>';
-        if( $exit ) $exit($shredded);
+        if( $exit ) 
+            return exit($shredded);
+        
         return $shredded;
     }
 
