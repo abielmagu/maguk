@@ -109,3 +109,12 @@ function hasherVerify($value, $base)
 {
     return System\Core\Hasher::verify($value, $base);
 }
+
+function percentage($part, $total, $decimals = 0)
+{
+    $result = ($part * 100) / $total;
+    if( is_int($decimals) && $decimals > 0 )
+        return round($result, $decimals);
+
+    return (int) $result;
+}
