@@ -123,3 +123,25 @@ function percentage($part, $total, $decimals = 0)
 
     return (int) $result;
 }
+
+function convert_units($amount, $amount_measure, $to_convert)
+{
+    $lb_kg = 0.453;   // 1 Lb = 0.453 Kg
+    $kg_lb = 2.204;   // 1 Kg = 2.204 Lb
+    $inch_cm = 2.54;  // 1 Inch = 2.54 Cm
+    $cm_inch = 0.393; // 1 Inch = 2.54 Cm
+
+    if( $amount_measure === 'libras' && $to_convert === 'kilogramos')
+        return $amount * $lb_kg;
+
+    if( $amount_measure === 'kilogramos' && $to_convert === 'libras')
+        return $amount * $kg_lb;
+
+    if( $amount_measure === 'pulgadas' && $to_convert === 'centimetros')
+        return $amount * $inch_cm;
+
+    if( $amount_measure === 'centimetros' && $to_convert === 'pulgadas')
+        return $amount * $cm_inch;
+
+    return null;
+}
