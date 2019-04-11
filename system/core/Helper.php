@@ -2,10 +2,10 @@
 
 abstract class Helper
 {
-    static public function showme($data, $die = true)
+    static public function showme($data, $exit = true)
     {
         $shredded = '<pre>' . print_r($data, true) . '</pre>';
-        if( $die ) die($shredded);
+        if( $exit ) $exit($shredded);
         return $shredded;
     }
 
