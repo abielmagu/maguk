@@ -26,13 +26,14 @@ class AuthController extends Controller {
             $password = $request->get('password') . Auth::getSalt();
             if( hasherVerify($password, $user->password) )
             {
-                $props = [
+                session_set('user', [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'type' => $user->type,
-                ];
-                session_set('user', $props);
+                ]);
+                
+                // You can set a function 'home' to redirect for type user
                 return redirect('');
             }
         }
