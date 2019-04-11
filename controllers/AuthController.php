@@ -1,10 +1,8 @@
 <?php namespace Controllers;
 
-use System\Core\Controller;
-use System\Core\Request;
 use Models\Auth;
 
-class AuthController extends Controller {
+class AuthController extends \System\Core\Controller {
 
     public function index()
     {
@@ -13,17 +11,16 @@ class AuthController extends Controller {
 
     public function signing()
     {
-        $request = new Request;
-        $this->validate($request->all(), [
+        $this->validate($this->request->all(), [
             'username' => 'required',
             'password' => 'required',
         ]);
 
-        $username = $request->get('username');
+        $username = $this->request->get('username');
         $model = new Auth;
         if( $user = $model->find($username, 'email') )
         {
-            $password = $request->get('password') . Auth::getSalt();
+            $password = $this->request->get('password') . Auth::getSalt();
             if( hasherVerify($password, $user->password) )
             {
                 session_set('user', [
