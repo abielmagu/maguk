@@ -45,14 +45,31 @@ abstract class Model
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function where($column, $operator, $value)
+    public function where($column, $operator, $value, $sensitive = true)
     {
         $PDOParam = $this->getPDOParam($value);
-        $this->query = "SELECT * FROM {$this->table} WHERE {$column} {$operator} :value";
+        $this->query = $sensitive 
+                     ? "SELECT * FROM {$this->table} WHERE {$column} {$operator} :value"
+                     : "SELECT * FROM {$this->table} WHERE {$column} COLLATE utf8mb4_general_ci {$operator} :value"; 
+                                                                    // _cs = Case Sensitive & _ci = Case insensitive
+                
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':value', $value, $PDOParam);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ); 
+    }
+
+    public function whereUpLow($column, $operator, $value, $upper = true)
+    {
+        $PDOParam = $this->getPDOParam($value);
+        $this->query = $upper 
+                     ? "SELECT * FROM {$this->table} WHERE UPPER({$column}) {$operator} :value"
+                     : "SELECT * FROM {$this->table} WHERE LOWER({$column}) {$operator} :value"; 
+        $stmt = $this->pdo->prepare( $this->query );
+        $value_uplow = $upper ? strtoupper($value) : strtolower($value);
+        $stmt->bindValue(':value', $value_uplow, $PDOParam);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);        
     }
 
     public function whereIn($column, array $values)
