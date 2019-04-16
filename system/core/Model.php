@@ -7,14 +7,15 @@ abstract class Model
 {
     protected $pdo;
     protected $query;
-    protected $character_set;
-    protected $collation_ci;
+    protected $character_set_server;
+    protected $collation_server;
+    // _cs = Case Sensitive & _ci = Case insensitive & _bin = binary
 
     public function __construct()
     {
         $this->pdo = Connection::getInstance();
-        $this->character_set = 'utf8mb4_bin';
-        $this->collation_ci = 'utf8mb4_general_ci';
+        $this->character_set_server = 'utf8mb4_bin';
+        $this->collation_server = 'utf8mb4_general_ci';
     }
  
     public function getNameTable()
@@ -56,8 +57,7 @@ abstract class Model
         $PDOParam = $this->getPDOParam($value);
         $this->query = $sensitive 
                      ? "SELECT * FROM {$this->table} WHERE {$column} {$operator} :value"
-                     : "SELECT * FROM {$this->table} WHERE {$column} COLLATE {$this->collation_ci} {$operator} :value"; 
-                                                                    // _cs = Case Sensitive & _ci = Case insensitive
+                     : "SELECT * FROM {$this->table} WHERE {$column} COLLATE {$this->collation_server} {$operator} :value"; 
                 
         $stmt = $this->pdo->prepare( $this->query );
         $stmt->bindValue(':value', $value, $PDOParam);
