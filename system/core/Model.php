@@ -1,14 +1,20 @@
 <?php namespace System\Core;
+
 use \PDO;
 use \PDOException;
+
 abstract class Model
 {
     protected $pdo;
     protected $query;
+    protected $character_set;
+    protected $collation_ci;
 
     public function __construct()
     {
         $this->pdo = Connection::getInstance();
+        $this->character_set = 'utf8mb4_bin';
+        $this->collation_ci = 'utf8mb4_general_ci';
     }
  
     public function getNameTable()
@@ -50,7 +56,7 @@ abstract class Model
         $PDOParam = $this->getPDOParam($value);
         $this->query = $sensitive 
                      ? "SELECT * FROM {$this->table} WHERE {$column} {$operator} :value"
-                     : "SELECT * FROM {$this->table} WHERE {$column} COLLATE utf8mb4_general_ci {$operator} :value"; 
+                     : "SELECT * FROM {$this->table} WHERE {$column} COLLATE {$this->collation_ci} {$operator} :value"; 
                                                                     // _cs = Case Sensitive & _ci = Case insensitive
                 
         $stmt = $this->pdo->prepare( $this->query );
