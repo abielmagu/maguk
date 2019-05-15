@@ -43,21 +43,21 @@ class Url {
 
     private function getQuery( $args = [] )
     {
-        if( !is_array($args) || !count($args) ) 
+       if( !is_array($args) || !count($args) ) 
             return '';
 
-        $query  = '?';
-        $packet = [];
+        $uri  = '?';
+        $query = [];
 
         foreach($args as $pos => $value)
         {
-            $key = is_string($pos) ? $pos : "a{$pos}";
+            $key = is_string($pos) ? $pos : "X{$pos}";
             $item = "{$key}={$value}";
-            array_push($packer, $item);
+            array_push($query, $item);
         }
 
-        $query .= implode('&', $packed);
-        return $query;
+        $uri .= implode('&', $query);
+        return $uri;
     }
 
     static public function getRoute($url, $args = null)
@@ -113,7 +113,7 @@ class Url {
     [REMOTE_ADDR] => ::1
     [DOCUMENT_ROOT] => /Applications/MAMP/htdocs
     [SERVER_ADMIN] => you@example.com
-    [SCRIPT_FILENAME] => /Applications/MAMP/htdocs/maguk/new/public/index.php
+    [SCRIPT_FILENAME] => ...maguk/new/public/index.php
     [REMOTE_PORT] => 49555
     [REDIRECT_QUERY_STRING] => url=dashboard
     [REDIRECT_URL] => /maguk/new/public/dashboard
